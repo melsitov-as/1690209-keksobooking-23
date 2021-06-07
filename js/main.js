@@ -163,7 +163,7 @@ const lng = +getRandomIntlimitDecimalPlaces(139.70000, 139.80000, 5);
 
 
 //Генерирует адрес
-const address = String(lat) + ',' + String(lng);
+const address = '$String(lat), $String(lng)';
 
 //Генерирует заголовок объявления
 const createAdAuthor = () => {
@@ -200,20 +200,12 @@ const createOffer = () => {
   };
 };
 
-const createLocation = () => {
-  return {
-    lat: lat,
-    lng: lng,
-  };
-};
+const createLocation = () => ({lat: lat, lng: lng});
 
-const createAd = () => {
-  return {
-    author: createAdAuthor(),
-    offer: createOffer(),
-    location: createLocation(),
-  };
-};
 
-const ads = new Array(10).fill(null).map(() => createAd());
-console.log(ads);
+const createAd = () => ({author: createAdAuthor(),offer: createOffer(),location: createLocation()});
+
+
+new Array(10).fill(null).map(() => createAd());
+
+
