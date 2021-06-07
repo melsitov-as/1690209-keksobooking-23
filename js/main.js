@@ -17,7 +17,7 @@ const getRandomIntlimitDecimalPlaces = (min, max, limitSigns) => {
   return (Math.random() * (min - max) + min).toFixed(limitSigns);
 };
 
-document.write(typeof first,  ' ', typeof second)
+document.write(typeof first,  ' ', typeof second);
 
 //Массив с адресами изображений для аваторов
 const AVATARS = [
@@ -30,7 +30,7 @@ const AVATARS = [
   'img/avatars/user07.png',
   'img/avatars/user08.png',
   'img/avatars/user09.png',
-  'img/avatars/user10.png'
+  'img/avatars/user10.png',
 ];
 
 //Массив с заголовками объявлений
@@ -56,7 +56,7 @@ const TYPES = [
   'flat',
   'house',
   'bungalow',
-  'hotel'
+  'hotel',
 ];
 
 // Генерирует количество комнат
@@ -69,14 +69,14 @@ const guests = getRandomInteger(1, 20);
 const CHECKINS = [
   '12:00',
   '13:00',
-  '14:00'
+  '14:00',
 ];
 
 //Массив с временем выселения
 const CHECKOUTS = [
   '12:00',
   '13:00',
-  '14:00'
+  '14:00',
 ];
 
 //Массив со списком удобств
@@ -86,13 +86,13 @@ const FEATURES_LIST = [
   'parking',
   'washer',
   'elevator',
-  'conditioner'
+  'conditioner',
 ];
 
 const generateNumberOfFeatures = () => {
   const numberOfFeatures = getRandomInteger(0, FEATURES_LIST.length);
   return numberOfFeatures;
-}
+};
 
 const numberOfAvailableFeatures = generateNumberOfFeatures();
 
@@ -100,15 +100,13 @@ const generateRandomFeature = () => {
   const randomFeatureIndex = getRandomInteger(0, FEATURES_LIST.length - 1);
   const randomFeature = FEATURES_LIST[randomFeatureIndex];
   return randomFeature;
-}
+};
 
-let availableFeatures = [generateRandomFeature()];
+const availableFeatures = [generateRandomFeature()];
 
-for (let i = 1; i <= numberOfAvailableFeatures; i++) {
-  let newValueFeature = generateRandomFeature();
-  const compareFeatures = availableFeatures.some((value) => {
-    return value === newValueFeature;
-  })
+for (let ii = 1; ii <= numberOfAvailableFeatures; ii++) {
+  const newValueFeature = generateRandomFeature();
+  const compareFeatures = availableFeatures.some((value) => {value === newValueFeature;});
   if (compareFeatures === false) {
     availableFeatures.push(newValueFeature);
   }
@@ -125,20 +123,20 @@ const DESCRIPTIONS = [
   'Описание помещения - 07',
   'Описание помещения - 08',
   'Описание помещения - 09',
-  'Описание помещения - 10'
+  'Описание помещения - 10',
 ];
 
 // Массив с фотографиями
 const PHOTOS_LIST = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
+  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
 const generateNumberOfPhotos = () => {
   const numberOfPhotos = getRandomInteger(0, PHOTOS_LIST.length);
   return numberOfPhotos;
-}
+};
 
 const numberOfAvailablePhotos = generateNumberOfPhotos();
 
@@ -146,15 +144,13 @@ const generateRandomPhoto = () => {
   const randomPhotoIndex = getRandomInteger(0, PHOTOS_LIST.length -1 );
   const randomPhoto = PHOTOS_LIST[randomPhotoIndex];
   return randomPhoto;
-}
+};
 
-let availablePhotos = [generateRandomPhoto()];
+const availablePhotos = [generateRandomPhoto()];
 
-for (let j = 0; j <= numberOfAvailablePhotos; j++) {
-  let newValuePhoto = generateRandomPhoto();
-  const comparePhotos = availablePhotos.some((value) => {
-    return value === newValuePhoto;
-  })
+for (let jj = 0; jj <= numberOfAvailablePhotos; jj++) {
+  const newValuePhoto = generateRandomPhoto();
+  const comparePhotos = availablePhotos.some((value) => {value === newValuePhoto;});
   if (comparePhotos === false) {
     availablePhotos.push(newValuePhoto);
   }
@@ -167,17 +163,17 @@ const lng = +getRandomIntlimitDecimalPlaces(139.70000, 139.80000, 5);
 
 
 //Генерирует адрес
-const address = String(lat) +',' + String(lng);
+const address = String(lat) + ',' + String(lng);
 
 //Генерирует заголовок объявления
 const createAdAuthor = () => {
   const randomAuthorAvatarIndex = getRandomInteger(0, AVATARS.length - 1);
 
   return {
-    author: AVATARS[randomAuthorAvatarIndex]
-  }
+    author: AVATARS[randomAuthorAvatarIndex],
+  };
   // Возвращает объект с пунктами объявления
-}
+};
 
 
 //Генерирует информацию в объявлении
@@ -201,26 +197,23 @@ const createOffer = () => {
     description: DESCRIPTIONS[randomDescriptionIndex],
     photos: availablePhotos,
 
-  }
-}
+  };
+};
 
 const createLocation = () => {
   return {
     lat: lat,
-    lng: lng
-  }
-}
+    lng: lng,
+  };
+};
 
 const createAd = () => {
   return {
     author: createAdAuthor(),
     offer: createOffer(),
-    location: createLocation()
-  }
-}
+    location: createLocation(),
+  };
+};
 
 const ads = new Array(10).fill(null).map(() => createAd());
 console.log(ads);
-
-
-
