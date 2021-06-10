@@ -185,4 +185,4 @@ const createAd = () => ({author: createAdAuthor(),offer: createOffer(),location:
 
 const adsArray = new Array(10).fill(null).map(() => createAd());
 
-export {AVATARS, TITLES, price, TYPES, rooms, guests, CHECKINS, CHECKOUTS, FEATURES_LIST, generateNumberOfFeatures, numberOfAvailableFeatures, generateRandomFeature, availableFeatures, DESCRIPTIONS, PHOTOS_LIST, generateNumberOfPhotos, numberOfAvailablePhotos, generateRandomPhoto, availablePhotos, lat, lng, address, createAdAuthor, createOffer, createLocation, adsArray}
+export {AVATARS, TITLES, price, TYPES, rooms, guests, CHECKINS, CHECKOUTS, FEATURES_LIST, generateNumberOfFeatures, numberOfAvailableFeatures, generateRandomFeature, availableFeatures, DESCRIPTIONS, PHOTOS_LIST, generateNumberOfPhotos, numberOfAvailablePhotos, generateRandomPhoto, availablePhotos, lat, lng, address, createAdAuthor, createOffer, createLocation, adsArray};
