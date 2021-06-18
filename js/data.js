@@ -143,7 +143,7 @@ const lat = +getRandomIntlimitDecimalPlaces(35.65000, 35.70000, 5);
 const lng = +getRandomIntlimitDecimalPlaces(139.70000, 139.80000, 5);
 
 //Генерирует адрес
-const address = '$String(lat), $String(lng)';
+const address = `${lat}, ${lng}`;
 
 //Генерирует заголовок объявления
 const createAdAuthor = () => {
