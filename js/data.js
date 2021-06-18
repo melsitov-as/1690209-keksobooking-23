@@ -143,7 +143,7 @@ const lat = +getRandomIntlimitDecimalPlaces(35.65000, 35.70000, 5);
 const lng = +getRandomIntlimitDecimalPlaces(139.70000, 139.80000, 5);
 
 //Генерирует адрес
-const address = '$String(lat), $String(lng)';
+const address = `${lat}, ${lng}`;
 
 //Генерирует заголовок объявления
 const createAdAuthor = () => {
@@ -185,4 +185,4 @@ const createAd = () => ({author: createAdAuthor(),offer: createOffer(),location:
 
 const adsArray = new Array(10).fill(null).map(() => createAd());
 
-export {AVATARS, TITLES, price, TYPES, rooms, guests, CHECKINS, CHECKOUTS, FEATURES_LIST, generateNumberOfFeatures, numberOfAvailableFeatures, generateRandomFeature, availableFeatures, DESCRIPTIONS, PHOTOS_LIST, generateNumberOfPhotos, numberOfAvailablePhotos, generateRandomPhoto, availablePhotos, lat, lng, address, createAdAuthor, createOffer, createLocation, adsArray};
+export {rooms, guests, CHECKINS, CHECKOUTS, FEATURES_LIST, generateNumberOfFeatures, numberOfAvailableFeatures, generateRandomFeature, availableFeatures, DESCRIPTIONS, PHOTOS_LIST, generateNumberOfPhotos, numberOfAvailablePhotos, generateRandomPhoto, availablePhotos, lat, lng, address, createAdAuthor, createOffer, createLocation, adsArray};
