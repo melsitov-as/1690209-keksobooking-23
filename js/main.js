@@ -1,28 +1,6 @@
-import {getRandomInteger, getRandomIntlimitDecimalPlaces} from './util.js';
-import {AVATARS, TITLES, price, TYPES, rooms, guests, CHECKINS, CHECKOUTS, FEATURES_LIST, generateNumberOfFeatures, numberOfAvailableFeatures, generateRandomFeature, availableFeatures, DESCRIPTIONS, PHOTOS_LIST, generateNumberOfPhotos, numberOfAvailablePhotos, generateRandomPhoto, availablePhotos, lat, lng, address, createAdAuthor, createOffer, createLocation, adsArray} from './data.js';
-import {generateOffer, generateAvatar, generateOfferTitle, generateOfferAddress, generateOfferPrice, generateOfferLogging, generateNumberOfRoomsGuests, generateOfferCheckinCheckout, generateFeatures, generateDescription, generateLodgingPhotos} from './generate-elements.js'
+import {generateOffer} from './generate-elements.js';
 
-
-console.log(adsArray);
 generateOffer(0);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // const cardTemplate = document.querySelector('#card').content;
 // const mapCanvas = document.querySelector('#map-canvas');
 //   //Сгенерировать объект с данными объявления
@@ -31,8 +9,6 @@ generateOffer(0);
 
 // // Сгенерировать аватар
 // const randomAvatar = createAdAuthor();
-
-
 
 // // Сгенерировать и сделать заголовок объявления
 
@@ -43,7 +19,6 @@ generateOffer(0);
 //   console.log(offerTitle)
 //   offerTitle.textContent = randomOfferTitle;
 
-
 // //Адрес
 // const randomOfferAddress = randomOffer.address;
 // const offerAddress = cardTemplate.querySelector('.popup__text--address');
@@ -53,7 +28,6 @@ generateOffer(0);
 //   offerAddress.style.display = 'none';
 // }
 
-
 // //Цена
 // const randomOfferPrice = randomOffer.price;
 // const offerPrice = cardTemplate.querySelector('.popup__text--price');
@@ -62,7 +36,6 @@ generateOffer(0);
 // } else {
 //   offerPrice.style.display = 'none';
 // }
-
 
 // // Тип жилья
 // const offerLodgingType = cardTemplate.querySelector('.popup__type');
@@ -105,7 +78,6 @@ generateOffer(0);
 // } else {
 //   offerRoomsAndGuests.style.display = 'none';
 // }
-
 
 // // Заезд и выезд
 // const offerCheckin = randomOffer.checkin;
@@ -170,12 +142,3 @@ generateOffer(0);
 
 // mapCanvas.appendChild(cardTemplate)
 // }
-
-
-
-
-
-
-
-
-
