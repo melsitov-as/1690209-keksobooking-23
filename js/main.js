@@ -1,6 +1,9 @@
 import {generateOffer} from './generate-elements.js';
-
+import {enableInactive} from './form.js';
 generateOffer(0);
+enableInactive();
+
+
 // const cardTemplate = document.querySelector('#card').content;
 // const mapCanvas = document.querySelector('#map-canvas');
 //   //Сгенерировать объект с данными объявления
