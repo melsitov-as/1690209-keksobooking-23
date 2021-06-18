@@ -21,12 +21,12 @@ const enableInactive = () => {
   const featureCheckboxesList = adForm.querySelectorAll('.features__checkbox');
   featureCheckboxesList.forEach((element) => {
     element.disabled = true;
-  })
+  });
   const description = adForm.querySelector('#description');
   description.disabled = true;
   const lodgingPhoto = adForm.querySelector('#images');
   lodgingPhoto.disabled = true;
-  const adFormSubmit = adForm.querySelector('.ad-form__submit')
+  const adFormSubmit = adForm.querySelector('.ad-form__submit');
   adFormSubmit.disabled = true;
   const adFormReset = adForm.querySelector('.ad-form__reset');
   adFormReset.disabled = true;
@@ -38,10 +38,10 @@ const enableInactive = () => {
   mapFiltersList.forEach((element) => {
     element.disabled = true;
   });
-  const masCheckboxesList = mapFiltersForm.querySelectorAll('.map__checkbox');
+  const mapCheckboxesList = mapFiltersForm.querySelectorAll('.map__checkbox');
   mapCheckboxesList.forEach((element)=>{
     element.disabled = true;
-  })
+  });
 };
 
 export {enableInactive};
