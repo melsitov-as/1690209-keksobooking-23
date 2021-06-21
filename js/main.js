@@ -1,5 +1,5 @@
-import {generateOffer} from './generate-elements.js';
-import {enableInactive} from './form.js';
+// import {generateOffer} from './generate-elements.js';
+// import {enableInactive} from './form.js';
 
 import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, adForm} from './validation.js';
 
@@ -22,7 +22,5 @@ adForm.addEventListener('submit', () => {
   // event.preventDefault();
   titleValidation;
   priceValidation;
-  console.log('Capacity не сработало')
   capacityValidation;
-  console.log('Capacity сработало')
-})
+});

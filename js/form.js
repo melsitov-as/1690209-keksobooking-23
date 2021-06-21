@@ -44,11 +44,4 @@ const enableInactive = () => {
   });
 };
 
-
-
 export {enableInactive};
-
-
-
-
-

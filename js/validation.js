@@ -1,5 +1,5 @@
 
-let minTitleLength = 30;
+const minTitleLength = 30;
 const maxTitleLength = 100;
 let minPrice = 0;
 const maxPrice = 1000000;
@@ -24,7 +24,7 @@ const titleValidation = () => {
   } else {
     titleInput.setCustomValidity('');
   }
-}
+};
 
 titleInput.addEventListener('input', titleValidation);
 
@@ -48,10 +48,10 @@ const minPriceChangeHandler = (evt) => {
     priceInput.min = '5000';
   } else if (evt.target.value === 'palace'){
     minPrice = 10000;
-    priceInput.placeholder = '10000'
+    priceInput.placeholder = '10000';
     priceInput.min = '10000';
   }
-}
+};
 
 typeSelect.addEventListener('change', minPriceChangeHandler);
 
@@ -59,13 +59,13 @@ const priceValidation = () => {
   const price = Number(priceInput.value);
 
   if (price < minPrice) {
-    priceInput.setCustomValidity(`Минимальное значение ${minPrice}`)
+    priceInput.setCustomValidity(`Минимальное значение ${minPrice}`);
   } else if (price > maxPrice) {
-      priceInput.setCustomValidity(`Максимальное значение ${maxPrice}`)
+    priceInput.setCustomValidity(`Максимальное значение ${maxPrice}`);
   } else {
     priceInput.setCustomValidity('');
   }
-}
+};
 
 priceInput.addEventListener('input', priceValidation);
 
@@ -80,27 +80,24 @@ const maxNumberOfGuestsHandler = (evt) => {
     maxNumberOfGuests = 3;
   } else if (evt.target.value === '100') {
     maxNumberOfGuests = 0;
-  };
-  console.log('Макс гости ' + maxNumberOfGuests);
+  }
   return maxNumberOfGuests;
-}
+};
 
 roomsNumberSelect.addEventListener('change', maxNumberOfGuestsHandler);
 
 const guestsNumberHandler = (evt) => {
   guestsNumber = Number(evt.target.value);
   return guestsNumber;
-}
+};
 
 const capacityValidation  = () => {
-  console.log(guestsNumber);
-  console.log(maxNumberOfGuests);
   if (guestsNumber > maxNumberOfGuests) {
     capacitySelect.setCustomValidity('Количество гостей должно быть меньше или равно количеству комнат. Если выбрано 100 комнат, то количество гостей должно быть равно 0');
   } else {
     capacitySelect.setCustomValidity('');
   }
-}
+};
 
 capacityValidation();
 
@@ -114,11 +111,9 @@ adForm.addEventListener('submit', () => {
   // event.preventDefault();
   titleValidation;
   priceValidation;
-  console.log('Capacity не сработало')
   capacityValidation;
-  console.log('Capacity сработало')
-})
+});
 
 
-export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, adForm}
+export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, adForm};
 
