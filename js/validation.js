@@ -14,7 +14,6 @@ const capacitySelect = document.querySelector('#capacity');
 const titleInput = document.querySelector('#title');
 const adForm = document.querySelector('.ad-form');
 const checkin = document.querySelector('#timein');
-const checkinOptionsList = checkin.querySelectorAll('option');
 const checkout = document.querySelector('#timeout');
 const checkoutOptionsList = checkout.querySelectorAll('option');
 
@@ -121,11 +120,10 @@ const checkinChangeHandler = (evt) => {
       checkoutOptionsList[ii].selected = true;
     }
   }
-}
+};
 
 
 checkin.addEventListener('change', checkinChangeHandler);
-
 
 
 adForm.addEventListener('submit', () => {
@@ -134,8 +132,6 @@ adForm.addEventListener('submit', () => {
   priceValidation;
   capacityValidation;
 });
-
-
 
 
 export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm};
