@@ -5,6 +5,7 @@ let minPrice = 0;
 const maxPrice = 1000000;
 let maxNumberOfGuests = 1;
 let guestsNumber = 3;
+let checkinTime = '12:00';
 
 const typeSelect = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
@@ -12,6 +13,11 @@ const roomsNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 const titleInput = document.querySelector('#title');
 const adForm = document.querySelector('.ad-form');
+const checkin = document.querySelector('#timein');
+const checkinOptionsList = checkin.querySelectorAll('option');
+const checkout = document.querySelector('#timeout');
+const checkoutOptionsList = checkout.querySelectorAll('option');
+
 
 // Валидация длины заголовка
 const titleValidation = () => {
@@ -106,6 +112,21 @@ capacitySelect.addEventListener('change', (evt) => {
   capacityValidation();
 });
 
+// Валидация въезд - выезд
+
+const checkinChangeHandler = (evt) => {
+  checkinTime = evt.target.value;
+  for (let ii = 0; ii < checkoutOptionsList.length; ii++) {
+    if (checkoutOptionsList[ii].value === checkinTime) {
+      checkoutOptionsList[ii].selected = true;
+    }
+  }
+}
+
+
+checkin.addEventListener('change', checkinChangeHandler);
+
+
 
 adForm.addEventListener('submit', () => {
   // event.preventDefault();
@@ -115,5 +136,7 @@ adForm.addEventListener('submit', () => {
 });
 
 
-export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, adForm};
+
+
+export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm};
 
