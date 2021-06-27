@@ -1,7 +1,12 @@
 // import {generateOffer} from './generate-elements.js';
-// import {enableInactive} from './form.js';
+import {enableActive} from './form.js';
 
 import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm} from './validation.js';
+
+import {mapCanvas, tokyoCenterAddress, mainPinIcon, mainPinMarker, points, generatePoints, createCustomPopup} from './generate-elements.js';
+
+
+
 
 titleInput.addEventListener('input', titleValidation);
 
@@ -26,3 +31,14 @@ adForm.addEventListener('submit', () => {
   priceValidation;
   capacityValidation;
 });
+
+
+
+
+
+
+
+
+
+
+
