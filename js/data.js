@@ -76,34 +76,25 @@ const generateNumberOfFeatures = () => {
 };
 
 
-
 const generateRandomFeature = () => {
   const randomFeatureIndex = getRandomInteger(0, FEATURES_LIST.length - 1);
   const randomFeature = FEATURES_LIST[randomFeatureIndex];
   return randomFeature;
 };
 
-// const newFeature = [generateRandomFeature()];
-// console.log(newFeature);
-// const newAddedFeature = generateRandomFeature();
-// console.log(newAddedFeature);
-// const compareFeatures = newFeature.some((value) => {value === newAddedFeature});
-// console.log(compareFeatures)
-
-
 
 const generateAvailableFeatures = () => {
   const availableFeatures = [generateRandomFeature()];
   const numberOfAvailableFeatures = generateNumberOfFeatures();
-    for (let ii = 0; ii < numberOfAvailableFeatures; ii++) {
+  for (let ii = 0; ii < numberOfAvailableFeatures; ii++) {
     const newValueFeature = generateRandomFeature();
-    const compareFeatures = availableFeatures.some((value) => {return value === newValueFeature;});
+    const compareFeatures = availableFeatures.some((value) => value === newValueFeature);
     if (compareFeatures === false) {
       availableFeatures.push(newValueFeature);
     }
   }
   return availableFeatures;
-}
+};
 
 
 //  Массив с описаниями помещений
@@ -133,13 +124,11 @@ const generateNumberOfPhotos = () => {
 };
 
 
-
 const generateRandomPhoto = () => {
   const randomPhotoIndex = getRandomInteger(0, PHOTOS_LIST.length -1 );
   const randomPhoto = PHOTOS_LIST[randomPhotoIndex];
   return randomPhoto;
 };
-
 
 
 const generateAvailablePhotos = () => {
@@ -148,26 +137,21 @@ const generateAvailablePhotos = () => {
 
   for (let jj = 0; jj < numberOfAvailablePhotos; jj++) {
     const newValuePhoto = generateRandomPhoto();
-    const comparePhotos = availablePhotos.some((value) => { return value === newValuePhoto;});
+    const comparePhotos = availablePhotos.some((value) => value === newValuePhoto);
     if (comparePhotos === false) {
       availablePhotos.push(newValuePhoto);
     }
   }
 
   return availablePhotos;
-}
-
+};
 
 
 // Генерирует координату
-const generateLat = () => {
-  return +getRandomIntlimitDecimalPlaces(35.65000, 35.70000, 5);
-}
+const generateLat = () => +getRandomIntlimitDecimalPlaces(35.65000, 35.70000, 5);
 
-const generateLng = () => {
-  return +getRandomIntlimitDecimalPlaces(139.70000, 139.80000, 5);
-}
 
+const generateLng = () => +getRandomIntlimitDecimalPlaces(139.70000, 139.80000, 5);
 
 
 //Генерирует адрес
@@ -183,9 +167,8 @@ const createAdAuthor = () => {
   // Возвращает объект с пунктами объявления
 };
 
-const getRandomTitleIndex  = () => {
-  return getRandomInteger(0, TITLES.length - 1);
-}
+const getRandomTitleIndex  = () => getRandomInteger(0, TITLES.length - 1);
+
 
 //Генерирует информацию в объявлении
 const createOffer = () => {

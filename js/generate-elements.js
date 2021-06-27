@@ -1,7 +1,6 @@
-import {address, adsArray} from './data.js';
-import {enableActive} from './form.js'
+import {adsArray} from './data.js';
+import {enableActive} from './form.js';
 
-console.log(adsArray);
 
 // const cardTemplate = document.querySelector('#card').content;
 // const offer = document.createDocumentFragment();
@@ -125,9 +124,6 @@ console.log(adsArray);
 //   return clonedOfferAvatar;
 // };
 
-
-const mapContainer = document.querySelector('#map');
-
 // const generateOffer = (index) => {
 //   for (index = 0; index < adsArray.length; index++) {
 //     if (generateAvatar(index) !== null) {
@@ -166,140 +162,132 @@ const mapContainer = document.querySelector('#map');
 //   mapContainer.appendChild(offer);
 
 
-
-
-/* global L:readonly */
-const mapCanvas = L.map('map-canvas')
-.on('load', () => {
-  console.log('Карта инициализирована');
-  enableActive();
-})
-
-  .setView({
-    lat: 35.556161,
-    lng: 139.7580223,
-  }, 10);
-
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(mapCanvas);
-
-const tokyoCenterAddress = {
-    lat: 35.556161,
-    lng: 139.7580223,
-}
-
-const mainPinIcon = L.icon({
-  iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
-});
-
-const mainPinMarker = L.marker(
-  {
-    lat: tokyoCenterAddress.lat,
-    lng: tokyoCenterAddress.lng,
-  },
-  {
-    draggable: true,
-    icon: mainPinIcon,
-  },
-);
-
-mainPinMarker.addTo(mapCanvas);
-
-const addressInput = document.querySelector('#address')
-let mainPinMarkerAddress = `lat: ${tokyoCenterAddress.lat}, lng: ${tokyoCenterAddress.lng}`
-
-addressInput.placeholder = `lat: ${parseFloat((tokyoCenterAddress.lat).toFixed(5))}, lng: ${parseFloat((tokyoCenterAddress.lng).toFixed(5))}`
-
-mainPinMarker.on('moveend', (evt) => {
-  mainPinMarkerAddress = evt.target.getLatLng();
-  addressInput.placeholder = `lat: ${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, lng: ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`
-});
-
-let typeText;
-let generateType = (index) => {
-
-}
-
-let points = [];
-const generatePoints = (index) => {
-  for (index = 0; index < adsArray.length; index++) {
-    points.push({
-      lat: adsArray[index].location.lat,
-      lng: adsArray[index].location.lng,
-      avatar: adsArray[index].author.author,
-      title: adsArray[index].offer.title,
-      address: `lat: ${parseFloat((adsArray[index].location.lat).toFixed(5))}, lng: ${parseFloat((adsArray[index].location.lng).toFixed(5))}`,
-      price: `${adsArray[index].offer.price} ₽/ночь`,
-      type: adsArray[index].offer.type,
-      rooms: adsArray[index].offer.rooms,
-      guests: adsArray[index].offer.guests,
-      checkin: adsArray[index].offer.checkin,
-      checkout: adsArray[index].offer.checkout,
-      features: adsArray[index].offer.features,
-      description: adsArray[index].offer.description,
-      photos: adsArray[index].offer.photos
+const generatePointsOnMap = () => {
+  const mapCanvas = L.map('map-canvas')
+    .on('load', () => {
+      enableActive();
     })
-  }
 
-  return points
-}
+    .setView({
+      lat: 35.556161,
+      lng: 139.7580223,
+    }, 10);
 
-generatePoints();
-console.log(points);
+  L.tileLayer(
+    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    },
+  ).addTo(mapCanvas);
 
-const createCustomPopup = (point) => {
-  const popupTemplate = document.querySelector('#card').content;
-  const popupAvatar = popupTemplate.querySelector('.popup__avatar')
-  const clonedPopupAvatar = popupAvatar.cloneNode(true);
-  const offer = document.createDocumentFragment();
-  clonedPopupAvatar.src = point.avatar;
-  offer.appendChild(clonedPopupAvatar);
+  const tokyoCenterAddress = {
+    lat: 35.556161,
+    lng: 139.7580223,
+  };
 
-  const popupTitle = popupTemplate.querySelector('.popup__title');
-  const clonedPopupTitle = popupTitle.cloneNode(true);
-  clonedPopupTitle.textContent = point.title;
-  offer.appendChild(clonedPopupTitle);
+  const mainPinIcon = L.icon({
+    iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg',
+    iconSize: [52, 52],
+    iconAnchor: [26, 52],
+  });
 
-  const popupAddress = popupTemplate.querySelector('.popup__text--address');
-  const clonedPopupAddress = popupAddress.cloneNode(true);
-  clonedPopupAddress.textContent = point.address;
-  offer.appendChild(clonedPopupAddress);
+  const mainPinMarker = L.marker(
+    {
+      lat: tokyoCenterAddress.lat,
+      lng: tokyoCenterAddress.lng,
+    },
+    {
+      draggable: true,
+      icon: mainPinIcon,
+    },
+  );
 
-  const popupPrice = popupTemplate.querySelector('.popup__text--price');
-  const clonedPopupPrice = popupPrice.cloneNode(true);
-  clonedPopupPrice.textContent = point.price;
-  offer.appendChild(clonedPopupPrice);
+  mainPinMarker.addTo(mapCanvas);
 
-  const popupType = popupTemplate.querySelector('.popup__type');
-  const clonedPopupType = popupType.cloneNode(true);
-  switch(point.type) {
-        case point.type = 'flat':
-          clonedPopupType.textContent = 'Квартира';
-          break;
-        case point.type = 'bungalow':
-          clonedPopupType.textContent = 'Бунгало';
-          break;
-        case point.type = 'house':
-          clonedPopupType.textContent = 'Дом';
-          break;
-        case point.type = 'palace':
-          clonedPopupType.textContent = 'Дворец';
-          break;
-        case point.type = 'hotel':
-          clonedPopupType.textContent.textContent = 'Отель';
-          break;
-      }
-  offer.appendChild(clonedPopupType);
+  const addressInput = document.querySelector('#address');
+  let mainPinMarkerAddress = `lat: ${tokyoCenterAddress.lat}, lng: ${tokyoCenterAddress.lng}`;
 
-  const popupCapacity = popupTemplate.querySelector('.popup__text--capacity');
-  const clonedPopupCapacity = popupCapacity.cloneNode(true);
-  let roomsCount;
+  addressInput.placeholder = `lat: ${parseFloat((tokyoCenterAddress.lat).toFixed(5))}, lng: ${parseFloat((tokyoCenterAddress.lng).toFixed(5))}`;
+
+  mainPinMarker.on('moveend', (evt) => {
+    mainPinMarkerAddress = evt.target.getLatLng();
+    addressInput.placeholder = `lat: ${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, lng: ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
+  });
+
+
+  const points = [];
+  const generatePoints = (index) => {
+    for (index = 0; index < adsArray.length; index++) {
+      points.push({
+        lat: adsArray[index].location.lat,
+        lng: adsArray[index].location.lng,
+        avatar: adsArray[index].author.author,
+        title: adsArray[index].offer.title,
+        address: `lat: ${parseFloat((adsArray[index].location.lat).toFixed(5))}, lng: ${parseFloat((adsArray[index].location.lng).toFixed(5))}`,
+        price: `${adsArray[index].offer.price} ₽/ночь`,
+        type: adsArray[index].offer.type,
+        rooms: adsArray[index].offer.rooms,
+        guests: adsArray[index].offer.guests,
+        checkin: adsArray[index].offer.checkin,
+        checkout: adsArray[index].offer.checkout,
+        features: adsArray[index].offer.features,
+        description: adsArray[index].offer.description,
+        photos: adsArray[index].offer.photos,
+      });
+    }
+
+    return points;
+  };
+
+  generatePoints();
+
+  const createCustomPopup = (point) => {
+    const popupTemplate = document.querySelector('#card').content;
+    const popupAvatar = popupTemplate.querySelector('.popup__avatar');
+    const clonedPopupAvatar = popupAvatar.cloneNode(true);
+    const offer = document.createDocumentFragment();
+    clonedPopupAvatar.src = point.avatar;
+    offer.appendChild(clonedPopupAvatar);
+
+    const popupTitle = popupTemplate.querySelector('.popup__title');
+    const clonedPopupTitle = popupTitle.cloneNode(true);
+    clonedPopupTitle.textContent = point.title;
+    offer.appendChild(clonedPopupTitle);
+
+    const popupAddress = popupTemplate.querySelector('.popup__text--address');
+    const clonedPopupAddress = popupAddress.cloneNode(true);
+    clonedPopupAddress.textContent = point.address;
+    offer.appendChild(clonedPopupAddress);
+
+    const popupPrice = popupTemplate.querySelector('.popup__text--price');
+    const clonedPopupPrice = popupPrice.cloneNode(true);
+    clonedPopupPrice.textContent = point.price;
+    offer.appendChild(clonedPopupPrice);
+
+    const popupType = popupTemplate.querySelector('.popup__type');
+    const clonedPopupType = popupType.cloneNode(true);
+    switch(point.type) {
+      case point.type = 'flat':
+        clonedPopupType.textContent = 'Квартира';
+        break;
+      case point.type = 'bungalow':
+        clonedPopupType.textContent = 'Бунгало';
+        break;
+      case point.type = 'house':
+        clonedPopupType.textContent = 'Дом';
+        break;
+      case point.type = 'palace':
+        clonedPopupType.textContent = 'Дворец';
+        break;
+      case point.type = 'hotel':
+        clonedPopupType.textContent.textContent = 'Отель';
+        break;
+    }
+    offer.appendChild(clonedPopupType);
+
+    const popupCapacity = popupTemplate.querySelector('.popup__text--capacity');
+    const clonedPopupCapacity = popupCapacity.cloneNode(true);
+    let roomsCount;
     if (point.rooms % 10 === 0 || (point.rooms % 10 >= 5 && point.rooms <= 9)) {
       roomsCount = 'комнат';
     } else if (point.rooms % 10 === 1) {
@@ -308,78 +296,71 @@ const createCustomPopup = (point) => {
       roomsCount = 'комнаты';
     }
     clonedPopupCapacity.textContent = `${point.rooms} ${roomsCount} для ${point.guests} гостей`;
-  offer.appendChild(clonedPopupCapacity);
+    offer.appendChild(clonedPopupCapacity);
 
-  const popupCheckinCheckout = popupTemplate.querySelector('.popup__text--time');
-  const clonedPopupCheckinCheckout = popupCheckinCheckout.cloneNode(true);
-  clonedPopupCheckinCheckout.textContent = `Заезд после ${point.checkin}, выезд до ${point.checkout}`;
-  offer.appendChild(clonedPopupCheckinCheckout);
+    const popupCheckinCheckout = popupTemplate.querySelector('.popup__text--time');
+    const clonedPopupCheckinCheckout = popupCheckinCheckout.cloneNode(true);
+    clonedPopupCheckinCheckout.textContent = `Заезд после ${point.checkin}, выезд до ${point.checkout}`;
+    offer.appendChild(clonedPopupCheckinCheckout);
 
-  const popupFeatures = popupTemplate.querySelector('.popup__features');
-  const clonedPopupFeatures = popupFeatures.cloneNode(true);
-  const offerFeaturesList = point.features;
-  const modifiers = offerFeaturesList.map((feature) => `popup__feature--${feature}`);
+    const popupFeatures = popupTemplate.querySelector('.popup__features');
+    const clonedPopupFeatures = popupFeatures.cloneNode(true);
+    const offerFeaturesList = point.features;
+    const modifiers = offerFeaturesList.map((feature) => `popup__feature--${feature}`);
 
-  clonedPopupFeatures.querySelectorAll('.popup__feature').forEach((item) => {
-        const modifier = item.classList[1];
-        if (modifiers.includes(modifier)) {
-          item.remove();
-        }
-      });
-  offer.appendChild(clonedPopupFeatures);
+    clonedPopupFeatures.querySelectorAll('.popup__feature').forEach((item) => {
+      const modifier = item.classList[1];
+      if (modifiers.includes(modifier)) {
+        item.remove();
+      }
+    });
+    offer.appendChild(clonedPopupFeatures);
 
-  const popupDescription = popupTemplate.querySelector('.popup__description');
-  const clonedPopupDescription = popupDescription.cloneNode(true);
-  clonedPopupDescription.textContent = point.description;
-  offer.appendChild(clonedPopupDescription);
+    const popupDescription = popupTemplate.querySelector('.popup__description');
+    const clonedPopupDescription = popupDescription.cloneNode(true);
+    clonedPopupDescription.textContent = point.description;
+    offer.appendChild(clonedPopupDescription);
 
-  const popupPhotosList = point.photos;
-  console.log(popupPhotosList);
-  const popupPhotos = popupTemplate.querySelector('.popup__photos');
-  const popupPhoto = popupTemplate.querySelector('.popup__photo');
-  const clonedPopupPhotos = popupPhotos.cloneNode(true);
-  for (let ii = 0; ii < popupPhotosList.length; ii++) {
-    const clonedPopupPhoto = popupPhoto.cloneNode(true);
-    console.log(clonedPopupPhoto);
-    clonedPopupPhoto.src = popupPhotosList[ii];
-    clonedPopupPhotos.appendChild(clonedPopupPhoto);
-  }
+    const popupPhotosList = point.photos;
+    const popupPhotos = popupTemplate.querySelector('.popup__photos');
+    const popupPhoto = popupTemplate.querySelector('.popup__photo');
+    const clonedPopupPhotos = popupPhotos.cloneNode(true);
+    for (let ii = 0; ii < popupPhotosList.length; ii++) {
+      const clonedPopupPhoto = popupPhoto.cloneNode(true);
+      clonedPopupPhoto.src = popupPhotosList[ii];
+      clonedPopupPhotos.appendChild(clonedPopupPhoto);
+    }
 
-  const clonedPopupPhotosList = clonedPopupPhotos.querySelectorAll('.popup__photo')
-  clonedPopupPhotos.removeChild(clonedPopupPhotosList[0])
-  console.log(clonedPopupPhotos);
+    const clonedPopupPhotosList = clonedPopupPhotos.querySelectorAll('.popup__photo');
+    clonedPopupPhotos.removeChild(clonedPopupPhotosList[0]);
 
-  offer.appendChild(clonedPopupPhotos);
+    offer.appendChild(clonedPopupPhotos);
 
-  return offer
-}
+    return offer;
+  };
 
-points.forEach((point) => {
-  const icon = L.icon({
-    iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
+  points.forEach((point) => {
+    const icon = L.icon({
+      iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+    });
 
-  const marker = L.marker({
-    lat: point.lat,
-    lng: point.lng,
+    const marker = L.marker({
+      lat: point.lat,
+      lng: point.lng,
     },
     {
       icon,
     },
-  );
-
-  marker
-    .addTo(mapCanvas)
-    .bindPopup(
-     createCustomPopup(point)
     );
-});
 
-export {mapCanvas, tokyoCenterAddress, mainPinIcon, mainPinMarker, points, generatePoints, createCustomPopup}
+    marker
+      .addTo(mapCanvas)
+      .bindPopup(
+        createCustomPopup(point),
+      );
+  });
+};
 
-
-
-
-
+export {generatePointsOnMap};
