@@ -1,5 +1,4 @@
-// import {generateOffer} from './generate-elements.js';
-// import {enableInactive} from './form.js';
+import {generatePointsOnMap} from './generate-elements.js';
 
 import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm} from './validation.js';
 
@@ -26,3 +25,6 @@ adForm.addEventListener('submit', () => {
   priceValidation;
   capacityValidation;
 });
+
+
+generatePointsOnMap();
