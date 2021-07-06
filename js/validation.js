@@ -1,3 +1,4 @@
+import {tokyoCenterAddress} from './generate-elements.js';
 
 const minTitleLength = 30;
 const maxTitleLength = 100;
@@ -126,13 +127,108 @@ const checkinChangeHandler = (evt) => {
 checkin.addEventListener('change', checkinChangeHandler);
 
 
-adForm.addEventListener('submit', () => {
-  // event.preventDefault();
-  titleValidation;
-  priceValidation;
-  capacityValidation;
-});
+const clearForm = () => {
+  titleInput.value = '';
+  const addressInput = document.querySelector('#address');
+  addressInput.placeholder = `lat: ${tokyoCenterAddress.lat}, lng: ${tokyoCenterAddress.lng}`;
+  const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
+  optionValueDefault.selected = true;
+  priceInput.value = '';
+  const timeinSelect = document.querySelector('#timein');
+  const timeinOptionDefault = timeinSelect.querySelector('option[value="12:00"]');
+  timeinOptionDefault.selected = true;
+  const timeoutSelect = document.querySelector('#timeout');
+  const timeoutOptionDefault = timeoutSelect.querySelector('option[value="12:00"]');
+  timeoutOptionDefault.selected = true;
+  const roomNumberSelect = document.querySelector('#room_number');
+  const roomNumberOptionDefault = roomNumberSelect.querySelector('option[value="1"');
+  roomNumberOptionDefault.selected = true;
+  const capacityOptionDefault = capacitySelect.querySelector('option[value="3"]');
+  capacityOptionDefault.selected = true;
+  const featuresInputs = document.querySelectorAll('.features__checkbox');
+  for (const featureInput of featuresInputs) {
+    featureInput.checked = false;
+  }
+  const descriptionTextarea = document.querySelector('#description');
+  descriptionTextarea.value = '';
+};
+
+const showSuccessPopup = () => {
+  const successPopup = document.querySelector('#success');
+  const body = document.querySelector('body');
+  const successPopupTemplate = successPopup.content.querySelector('.success');
+  const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
+  clonedSuccessPopupTemplate.style.position = 'absolute';
+  clonedSuccessPopupTemplate.style.top = '50%';
+  clonedSuccessPopupTemplate.style.left = '50%';
+  clonedSuccessPopupTemplate.style.transform = 'translate(-50%, -50%)';
+  body.appendChild(clonedSuccessPopupTemplate);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'esc') {
+      body.removeChild(clonedSuccessPopupTemplate);
+    }
+  });
+};
+
+const showErrorPopup = () => {
+  const errorPopup = document.querySelector('#error');
+  const body = document.querySelector('body');
+  const errorPopupTemplate = errorPopup.content.querySelector('.error');
+  const clonedErrorPopupTemplate = errorPopupTemplate.cloneNode(true);
+  clonedErrorPopupTemplate.style.position = 'absolute';
+  clonedErrorPopupTemplate.style.top = '50%';
+  clonedErrorPopupTemplate.style.left = '50%';
+  clonedErrorPopupTemplate.style.transform = 'translate(-50%, -50%)';
+  body.appendChild(clonedErrorPopupTemplate);
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' || evt.key === 'esc') {
+      body.removeChild(clonedErrorPopupTemplate);
+      clearForm();
+    }
+  });
+
+  const errorButton = clonedErrorPopupTemplate.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
+    body.removeChild(clonedErrorPopupTemplate);
+    clearForm();
+  });};
 
 
-export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm};
+const setUserFormSubmit = (onSuccess, onError) => {
+  adForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    titleValidation;
+    priceValidation;
+    capacityValidation;
+
+    const formData = new FormData(event.target);
+
+    fetch(
+      'https://23.javascript.pages.academy/keksobooking',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    ).then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onError();
+      }
+    })
+      .catch(() => {
+        onError();
+      });
+  });};
+
+const adResetButton = document.querySelector('.ad-form__reset');
+const resetForm = () => {
+  adResetButton.addEventListener('click', () => {
+    clearForm();
+  });
+};
+
+export {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm, setUserFormSubmit, showSuccessPopup, showErrorPopup, resetForm};
 
