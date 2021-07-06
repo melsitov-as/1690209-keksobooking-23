@@ -1,6 +1,5 @@
-import {generatePointsOnMap} from './generate-elements.js';
-
-import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, adForm} from './validation.js';
+import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, setUserFormSubmit, showSuccessPopup, showErrorPopup, resetForm} from './validation.js';
+import {addPoints} from './server-interaction.js';
 
 titleInput.addEventListener('input', titleValidation);
 
@@ -19,12 +18,9 @@ capacitySelect.addEventListener('change', (evt) => {
 
 checkin.addEventListener('change', checkinChangeHandler);
 
-adForm.addEventListener('submit', () => {
-  // event.preventDefault();
-  titleValidation;
-  priceValidation;
-  capacityValidation;
-});
 
+setUserFormSubmit(showSuccessPopup, showErrorPopup);
 
-generatePointsOnMap();
+resetForm();
+
+addPoints();
