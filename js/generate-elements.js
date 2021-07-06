@@ -203,11 +203,11 @@ mainPinMarker.addTo(mapCanvas);
 const addressInput = document.querySelector('#address');
 let mainPinMarkerAddress = `lat: ${tokyoCenterAddress.lat}, lng: ${tokyoCenterAddress.lng}`;
 
-addressInput.placeholder = `lat: ${parseFloat((tokyoCenterAddress.lat).toFixed(5))}, lng: ${parseFloat((tokyoCenterAddress.lng).toFixed(5))}`;
+addressInput.value = `lat: ${parseFloat((tokyoCenterAddress.lat).toFixed(5))}, lng: ${parseFloat((tokyoCenterAddress.lng).toFixed(5))}`;
 
 mainPinMarker.on('moveend', (evt) => {
   mainPinMarkerAddress = evt.target.getLatLng();
-  addressInput.placeholder = `lat: ${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, lng: ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
+  addressInput.value = `lat: ${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, lng: ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
 });
 
 
