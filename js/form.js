@@ -44,6 +44,8 @@
 //   });
 // };
 
+// Включает активное состояние на сайте
+
 const enableActive = () => {
   const adForm = document.querySelector('.ad-form');
   const adFormHeaderInput = adForm.querySelector('.ad-form-header__input');

@@ -126,6 +126,7 @@ const checkinChangeHandler = (evt) => {
 
 checkin.addEventListener('change', checkinChangeHandler);
 
+// Очищает форму
 
 const clearForm = () => {
   titleInput.value = '';
@@ -153,6 +154,8 @@ const clearForm = () => {
   descriptionTextarea.value = '';
 };
 
+// Показыват попап об успешной отправке сообщения
+
 const showSuccessPopup = () => {
   const successPopup = document.querySelector('#success');
   const body = document.querySelector('body');
@@ -170,6 +173,8 @@ const showSuccessPopup = () => {
     }
   });
 };
+
+// Показывает попап об ошибке в отправке сообщения
 
 const showErrorPopup = () => {
   const errorPopup = document.querySelector('#error');
@@ -195,6 +200,8 @@ const showErrorPopup = () => {
     clearForm();
   });};
 
+
+// Событие при отправке формы
 
 const setUserFormSubmit = (onSuccess, onError) => {
   adForm.addEventListener('submit', (event) => {
@@ -222,6 +229,8 @@ const setUserFormSubmit = (onSuccess, onError) => {
         onError();
       });
   });};
+
+// Навешивает на кнопку очистки очистку формы
 
 const adResetButton = document.querySelector('.ad-form__reset');
 const resetForm = () => {

@@ -1,6 +1,16 @@
 //Получение данных для элементов
 import {points, mapCanvas, createCustomPopup, generatePoints} from './generate-elements.js';
 
+// Добавляет маркеры на карту
+
+const createMarkerCoordinates = (point) => {
+  const marker = L.marker ({
+    lat: point.lat,
+    lng: point.lng,
+  });
+  return marker;
+};
+
 const addPoints = () => {
   points.forEach((point) => {
     const icon = L.icon({
@@ -9,24 +19,24 @@ const addPoints = () => {
       iconAnchor: [20, 40],
     });
 
-    const marker = L.marker({
-      lat: point.lat,
-      lng: point.lng,
-    },
+    createMarkerCoordinates(point),
     {
       icon,
     },
-    );
 
-    marker
+
+    createMarkerCoordinates(point)
       .addTo(mapCanvas);
-    marker
+    createMarkerCoordinates(point)
       .addTo(mapCanvas)
       .bindPopup(
         createCustomPopup(point),
       );
   });
 };
+
+
+// Показывает сообщение об ошибке связи с сервером
 
 const showGetErrorPopup = () => {
   const main = document.querySelector('main');
@@ -43,12 +53,33 @@ const showGetErrorPopup = () => {
 fetch ('https://23.javascript.pages.academy/keksobooking/data')
   .then((responce) => responce.json())
   .then((data) => {
-    generatePoints(data);
+    generatePoints(data.slice(0,10));
     addPoints();
-  })
-  .catch(() => {showGetErrorPopup();
   });
+// .catch(() => {showGetErrorPopup();
+// });
 
+// Фильтр объявлений
+const housingTypeFilter = document.querySelector('#housing-type');
 
-export {addPoints, showGetErrorPopup};
+const adsTypeFilter = () => {
+  fetch ('https://23.javascript.pages.academy/keksobooking/data')
+    .then((responce) => responce.json())
+    .then((adsList) => {
+      housingTypeFilter.addEventListener('change', (evt) => {
+        const showedAds = adsList.filter((ad) => (ad.offer.type === evt.target.value));
+        generatePoints(showedAds.slice(0, 10));
+        addPoints();
+      });
+    });
+};
+
+// housingTypeFilter.addEventListener('change', (evt) => {
+//   console.log(evt.target.value);
+// });
+
+// 1. если в полученных данных тип жилья совпадает, то добавлять элемент массива в генерацию маркеров
+// 2. выводить в консоль полученные данные
+
+export {addPoints, showGetErrorPopup, adsTypeFilter};
 

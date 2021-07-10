@@ -160,6 +160,8 @@ import {enableActive} from './form.js';
 //   generateOffer(10)
 //   mapContainer.appendChild(offer);
 
+
+// Добавить карту
 const mapCanvas = L.map('map-canvas')
   .on('load', () => {
     enableActive();
@@ -200,6 +202,8 @@ const mainPinMarker = L.marker(
 
 mainPinMarker.addTo(mapCanvas);
 
+// Добавляет координаты в инпут с адресом
+
 const addressInput = document.querySelector('#address');
 let mainPinMarkerAddress = `lat: ${tokyoCenterAddress.lat}, lng: ${tokyoCenterAddress.lng}`;
 
@@ -210,6 +214,7 @@ mainPinMarker.on('moveend', (evt) => {
   addressInput.value = `lat: ${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, lng: ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
 });
 
+// Создает массив для содержания балунов
 
 const points = [];
 const generatePoints = (data) => {
@@ -231,9 +236,10 @@ const generatePoints = (data) => {
       photos: data[index].offer.photos,
     });
   }
-
   return points;
 };
+
+// Создает шаблон для балуна
 
 const createCustomPopup = (point) => {
   const popupTemplate = document.querySelector('#card').content;
@@ -335,31 +341,32 @@ const createCustomPopup = (point) => {
 
     offer.appendChild(clonedPopupPhotos);
   }
-
   return offer;
 };
 
-points.forEach((point) => {
-  const icon = L.icon({
-    iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
+// Добавляет маркеры на карту на основе сгенерированных данных
 
-  const marker = L.marker({
-    lat: point.lat,
-    lng: point.lng,
-  },
-  {
-    icon,
-  },
-  );
+// points.forEach((point) => {
+//   const icon = L.icon({
+//     iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg',
+//     iconSize: [40, 40],
+//     iconAnchor: [20, 40],
+//   });
 
-  marker
-    .addTo(mapCanvas)
-    .bindPopup(
-      createCustomPopup(point),
-    );
-});
+//   const marker = L.marker({
+//     lat: point.lat,
+//     lng: point.lng,
+//   },
+//   {
+//     icon,
+//   },
+//   );
+
+//   marker
+//     .addTo(mapCanvas)
+//     .bindPopup(
+//       createCustomPopup(point),
+//     );
+// });
 
 export {generatePoints, points, createCustomPopup, mapCanvas, tokyoCenterAddress};
