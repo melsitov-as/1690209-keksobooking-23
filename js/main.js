@@ -1,5 +1,5 @@
 import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, setUserFormSubmit, showSuccessPopup, showErrorPopup, resetForm} from './validation.js';
-import {addPoints, adsTypeFilter} from './server-interaction.js';
+import {addPoints} from './server-interaction.js';
 
 
 // Валидация инпута с заголовком
@@ -41,4 +41,3 @@ resetForm();
 
 addPoints();
 
-adsTypeFilter();
