@@ -1,26 +1,19 @@
-import {titleValidation, titleInput, minPriceChangeHandler, typeSelect, priceValidation, priceInput, roomsNumberSelect, maxNumberOfGuestsHandler, guestsNumberHandler, capacityValidation, capacitySelect, checkinChangeHandler, checkin, setUserFormSubmit, showSuccessPopup, showErrorPopup, resetForm} from './validation.js';
-import {addPoints} from './server-interaction.js';
 
-titleInput.addEventListener('input', titleValidation);
+import {enableActive} from './enable-active.js';
+import {mapMarkersExe} from './map-markers.js';
+import { validation } from './validation.js';
+import {showErrorPopup} from './error-popup.js';
 
-typeSelect.addEventListener('change', minPriceChangeHandler);
+// 1. Получить данные с сервера
+let serverData;
+const getServerData = () => {
+  fetch ('https://23.javascript.pages.academy/keksobooking/data')
+    .then((responce) => responce.json())
+    .then((data) => serverData = data)
+    .then(() => enableActive())
+    .then(() => mapMarkersExe(serverData))
+    .then(() => validation())
+    .catch(() => showErrorPopup());
+};
 
-priceInput.addEventListener('input', priceValidation);
-
-roomsNumberSelect.addEventListener('change', maxNumberOfGuestsHandler);
-
-capacityValidation();
-
-capacitySelect.addEventListener('change', (evt) => {
-  guestsNumberHandler(evt);
-  capacityValidation();
-});
-
-checkin.addEventListener('change', checkinChangeHandler);
-
-
-setUserFormSubmit(showSuccessPopup, showErrorPopup);
-
-resetForm();
-
-addPoints();
+getServerData();
