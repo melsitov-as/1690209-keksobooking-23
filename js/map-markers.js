@@ -1,4 +1,5 @@
 
+import { adFormEnableActive, mapFiltersEnableActive } from './enable-active.js';
 import { generateBaloon } from './generate-elements.js';
 import {debounce} from './utils/debounce.js';
 
@@ -6,6 +7,7 @@ const rerenderDelay = 500;
 //  Работа с картой и маркерами
 const mapMarkersExe = (serverData) => {
   const mapCanvas = L.map('map-canvas')
+    .on('load', () => adFormEnableActive())
     .setView({
       lat: 35.556161,
       lng: 139.7580223,
@@ -19,7 +21,7 @@ const mapMarkersExe = (serverData) => {
   ).addTo(mapCanvas);
 
   const mainPinIcon = L.icon({
-    iconUrl: 'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg',
+    iconUrl: '../img/main-pin.svg',
     iconSize: [52, 52],
     iconAnchor: [26, 52],
   });
@@ -54,11 +56,25 @@ const mapMarkersExe = (serverData) => {
   const markerGroup = L.layerGroup().addTo(mapCanvas);
 
   const addMarkers = (debounce((data) => {
+    mapFiltersEnableActive();
     (data.slice(0, 10)).forEach((point) => {
-      const marker = L.marker({
-        lat: point.location.lat,
-        lng: point.location.lng,
+      const markerIcon = L.icon({
+        iconUrl: '../img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
       });
+
+      const marker = L.marker(
+        {
+          lat: point.location.lat,
+          lng: point.location.lng,
+        },
+        {
+          icon: markerIcon,
+        },
+      );
+
+
       marker
         .addTo(markerGroup)
         .bindPopup(generateBaloon(point));
@@ -203,6 +219,7 @@ const mapMarkersExe = (serverData) => {
       }
       markerGroup.clearLayers();
       addMarkers(filteredServerData);
+      mapFiltersEnableActive();
     });
   };
   changeMarkersByFilters(serverData);

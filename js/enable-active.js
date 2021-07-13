@@ -1,5 +1,5 @@
 
-const enableActive = () => {
+const adFormEnableActive = () => {
   const adForm = document.querySelector('.ad-form');
   const adFormHeaderInput = adForm.querySelector('.ad-form-header__input');
   adFormHeaderInput.disabled = false;
@@ -32,7 +32,9 @@ const enableActive = () => {
   const adFormReset = adForm.querySelector('.ad-form__reset');
   adFormReset.disabled = false;
   adForm.classList.remove('ad-form--disabled');
+};
 
+const mapFiltersEnableActive = () => {
   const mapFiltersForm = document.querySelector('.map__filters');
   mapFiltersForm.classList.remove('map__filters--disabled');
   const mapFiltersList = mapFiltersForm.querySelectorAll('.map__filter');
@@ -45,4 +47,4 @@ const enableActive = () => {
   });
 };
 
-export {enableActive};
+export {adFormEnableActive, mapFiltersEnableActive};

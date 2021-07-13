@@ -131,7 +131,7 @@ const validation = () => {
   const clearForm = () => {
     titleInput.value = '';
     const addressInput = document.querySelector('#address');
-    addressInput.placeholder = `lat: ${parseFloat((35.556161).toFixed(5))}, lng: ${parseFloat((139.7580223).toFixed(5))}`;
+    addressInput.value = `lat: ${parseFloat((35.556161).toFixed(5))}, lng: ${parseFloat((139.7580223).toFixed(5))}`;
     const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
     optionValueDefault.selected = true;
     priceInput.value = '';
@@ -161,16 +161,29 @@ const validation = () => {
     const body = document.querySelector('body');
     const successPopupTemplate = successPopup.content.querySelector('.success');
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
+    clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
     clonedSuccessPopupTemplate.style.top = '50%';
     clonedSuccessPopupTemplate.style.left = '50%';
     clonedSuccessPopupTemplate.style.transform = 'translate(-50%, -50%)';
     body.appendChild(clonedSuccessPopupTemplate);
 
+
     document.addEventListener('keydown', (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'esc') {
-        body.removeChild(clonedSuccessPopupTemplate);
+      if (body.querySelector('.cloned-success-popup')) {
+        if (evt.key === 'Escape' || evt.key === 'esc') {
+          body.removeChild(clonedSuccessPopupTemplate);
+          clearForm();
+        }
       }
+    });
+
+    document.addEventListener('click', () => {
+      if (body.querySelector('.cloned-success-popup')) {
+        body.removeChild(clonedSuccessPopupTemplate);
+        clearForm();
+      }
+
     });
   };
 
@@ -181,6 +194,7 @@ const validation = () => {
     const body = document.querySelector('body');
     const errorPopupTemplate = errorPopup.content.querySelector('.error');
     const clonedErrorPopupTemplate = errorPopupTemplate.cloneNode(true);
+    clonedErrorPopupTemplate.classList.add('.cloned-error-popup');
     clonedErrorPopupTemplate.style.position = 'absolute';
     clonedErrorPopupTemplate.style.top = '50%';
     clonedErrorPopupTemplate.style.left = '50%';
@@ -188,17 +202,16 @@ const validation = () => {
     body.appendChild(clonedErrorPopupTemplate);
 
     document.addEventListener('keydown', (evt) => {
-      if (evt.key === 'Escape' || evt.key === 'esc') {
-        body.removeChild(clonedErrorPopupTemplate);
-        clearForm();
+      if (body.querySelector('.cloned-error-template')) {
+        if (evt.key === 'Escape' || evt.key === 'esc') {
+          body.removeChild(clonedErrorPopupTemplate);
+        }
       }
     });
-
 
     const errorButton = clonedErrorPopupTemplate.querySelector('.error__button');
     errorButton.addEventListener('click', () => {
       body.removeChild(clonedErrorPopupTemplate);
-      clearForm();
     });
   };
 
@@ -231,6 +244,8 @@ const validation = () => {
           onError();
         });
     });
+
+    clearForm();
   };
 
   setUserFormSubmit(showSuccessPopup, showErrorPopup);
