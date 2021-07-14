@@ -1,32 +1,46 @@
 
-const validation = () => {
-  const minTitleLength = 30;
-  const maxTitleLength = 100;
+const validationExecution = () => {
+  const MIN_TITLE_LENGTH = 30;
+  const MAX_TITLE_LENGTH = 100;
   let minPrice = 0;
-  const maxPrice = 1000000;
-  let maxNumberOfGuests = 1;
-  let guestsNumber = 3;
+  const MAX_PRICE = 1000000;
   let checkinTime = '12:00';
+  let checkoutTime = '12:00';
 
   const typeSelect = document.querySelector('#type');
   const priceInput = document.querySelector('#price');
-  const roomsNumberSelect = document.querySelector('#room_number');
-  const capacitySelect = document.querySelector('#capacity');
+
   const titleInput = document.querySelector('#title');
   const adForm = document.querySelector('.ad-form');
   const checkin = document.querySelector('#timein');
   const checkout = document.querySelector('#timeout');
+  const checkinOptionsList = checkin.querySelectorAll('option');
   const checkoutOptionsList = checkout.querySelectorAll('option');
+  const body = document.querySelector('body');
+  const successPopup = document.querySelector('#success');
+  const successPopupTemplate = successPopup.content.querySelector('.success');
+  const errorPopup = document.querySelector('#error');
+  const errorPopupTemplate = errorPopup.content.querySelector('.error');
+  const adResetButton = document.querySelector('.ad-form__reset');
 
+  const addressInput = document.querySelector('#address');
+  const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
+  const timeinSelect = document.querySelector('#timein');
+  const timeinOptionDefault = timeinSelect.querySelector('option[value="12:00"]');
+  const timeoutSelect = document.querySelector('#timeout');
+  const timeoutOptionDefault = timeoutSelect.querySelector('option[value="12:00"]');
+  // const roomNumberSelect = document.querySelector('#room_number');
+  const featuresInputs = document.querySelectorAll('.features__checkbox');
+  const descriptionTextarea = document.querySelector('#description');
 
   // Валидация длины заголовка
   const titleValidation = () => {
     const valueLength = titleInput.value.length;
 
-    if (valueLength < minTitleLength) {
-      titleInput.setCustomValidity(`Ещё ${  minTitleLength - valueLength } симв.`);
-    } else if (valueLength > maxTitleLength) {
-      titleInput.setCustomValidity(`Удалите лишние ${valueLength - maxTitleLength} симв.`);
+    if (valueLength < MIN_TITLE_LENGTH) {
+      titleInput.setCustomValidity(`Ещё ${  MIN_TITLE_LENGTH - valueLength } симв.`);
+    } else if (valueLength > MAX_TITLE_LENGTH ) {
+      titleInput.setCustomValidity(`Удалите лишние ${valueLength - MAX_TITLE_LENGTH } симв.`);
     } else {
       titleInput.setCustomValidity('');
     }
@@ -66,8 +80,8 @@ const validation = () => {
 
     if (price < minPrice) {
       priceInput.setCustomValidity(`Минимальное значение ${minPrice}`);
-    } else if (price > maxPrice) {
-      priceInput.setCustomValidity(`Максимальное значение ${maxPrice}`);
+    } else if (price > MAX_PRICE) {
+      priceInput.setCustomValidity(`Максимальное значение ${MAX_PRICE}`);
     } else {
       priceInput.setCustomValidity('');
     }
@@ -75,42 +89,37 @@ const validation = () => {
 
   priceInput.addEventListener('input', priceValidation);
 
+
   //Валидация количества комнат и количества мест
+  let roomsNumber = 1;
+  let capacityValue = 3;
+  const roomsNumberSelect = document.querySelector('#room_number');
+  const capacitySelect = document.querySelector('#capacity');
 
-  const maxNumberOfGuestsHandler = (evt) => {
-    if (evt.target.value === '1') {
-      maxNumberOfGuests = 1;
-    } else if (evt.target.value === '2') {
-      maxNumberOfGuests = 2;
-    } else if (evt.target.value === '3') {
-      maxNumberOfGuests = 3;
-    } else if (evt.target.value === '100') {
-      maxNumberOfGuests = 0;
+
+  const changeMaxNumberOfGuestValue = (evt) => {
+    roomsNumber = Number(evt.target.value);
+    // console.log(roomsNumber);
+    return roomsNumber;
+  };
+
+  roomsNumberSelect.addEventListener('change', changeMaxNumberOfGuestValue );
+
+  const changeCapacityValue = (evt) => {
+    capacityValue = Number(evt.target.value);
+    // console.log(capacityValue);
+    return capacityValue;
+  };
+
+  capacitySelect.addEventListener('change', changeCapacityValue);
+
+  const capacityValidationExecution = () => {
+    if (roomsNumber === 100 && capacityValue !== 0) {
+    // console.log('Клик')
+      capacitySelect.setCustomValidity('Помещения, в которых 100 комнат не предназначены для размещения гостей');
     }
-    return maxNumberOfGuests;
   };
-
-  roomsNumberSelect.addEventListener('change', maxNumberOfGuestsHandler);
-
-  const guestsNumberHandler = (evt) => {
-    guestsNumber = Number(evt.target.value);
-    return guestsNumber;
-  };
-
-  const capacityValidation  = () => {
-    if (guestsNumber > maxNumberOfGuests) {
-      capacitySelect.setCustomValidity('Количество гостей должно быть меньше или равно количеству комнат. Если выбрано 100 комнат, то количество гостей должно быть равно 0');
-    } else {
-      capacitySelect.setCustomValidity('');
-    }
-  };
-
-  capacityValidation();
-
-  capacitySelect.addEventListener('change', (evt) => {
-    guestsNumberHandler(evt);
-    capacityValidation();
-  });
+  capacityValidationExecution();
 
   // Валидация въезд - выезд
 
@@ -123,43 +132,40 @@ const validation = () => {
     }
   };
 
+  const checkoutChangeHandler = (evt) => {
+    checkoutTime = evt.target.value;
+    for (let ii = 0; ii < checkinOptionsList.length; ii++) {
+      if (checkinOptionsList[ii].value === checkoutTime) {
+        checkinOptionsList[ii].selected = true;
+      }
+    }
+  };
 
   checkin.addEventListener('change', checkinChangeHandler);
+  checkout.addEventListener('change', checkoutChangeHandler);
 
   // Очищает форму
 
   const clearForm = () => {
     titleInput.value = '';
-    const addressInput = document.querySelector('#address');
-    addressInput.value = `lat: ${parseFloat((35.556161).toFixed(5))}, lng: ${parseFloat((139.7580223).toFixed(5))}`;
-    const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
+    addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
+    addressInput.placeholder = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
     optionValueDefault.selected = true;
     priceInput.value = '';
-    const timeinSelect = document.querySelector('#timein');
-    const timeinOptionDefault = timeinSelect.querySelector('option[value="12:00"]');
     timeinOptionDefault.selected = true;
-    const timeoutSelect = document.querySelector('#timeout');
-    const timeoutOptionDefault = timeoutSelect.querySelector('option[value="12:00"]');
     timeoutOptionDefault.selected = true;
-    const roomNumberSelect = document.querySelector('#room_number');
-    const roomNumberOptionDefault = roomNumberSelect.querySelector('option[value="1"');
-    roomNumberOptionDefault.selected = true;
-    const capacityOptionDefault = capacitySelect.querySelector('option[value="3"]');
-    capacityOptionDefault.selected = true;
-    const featuresInputs = document.querySelectorAll('.features__checkbox');
+    // roomNumberOptionDefault.selected = true;
+    // capacityOptionDefault.selected = true;
     for (const featureInput of featuresInputs) {
       featureInput.checked = false;
     }
-    const descriptionTextarea = document.querySelector('#description');
+
     descriptionTextarea.value = '';
   };
 
   // Показыват попап об успешной отправке сообщения
 
   const showSuccessPopup = () => {
-    const successPopup = document.querySelector('#success');
-    const body = document.querySelector('body');
-    const successPopupTemplate = successPopup.content.querySelector('.success');
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
     clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
@@ -167,7 +173,6 @@ const validation = () => {
     clonedSuccessPopupTemplate.style.left = '50%';
     clonedSuccessPopupTemplate.style.transform = 'translate(-50%, -50%)';
     body.appendChild(clonedSuccessPopupTemplate);
-
 
     document.addEventListener('keydown', (evt) => {
       if (body.querySelector('.cloned-success-popup')) {
@@ -190,9 +195,6 @@ const validation = () => {
   // Показывает попап об ошибке в отправке сообщения
 
   const showErrorPopup = () => {
-    const errorPopup = document.querySelector('#error');
-    const body = document.querySelector('body');
-    const errorPopupTemplate = errorPopup.content.querySelector('.error');
     const clonedErrorPopupTemplate = errorPopupTemplate.cloneNode(true);
     clonedErrorPopupTemplate.classList.add('.cloned-error-popup');
     clonedErrorPopupTemplate.style.position = 'absolute';
@@ -218,41 +220,37 @@ const validation = () => {
 
   // Событие при отправке формы
 
-  const setUserFormSubmit = (onSuccess, onError) => {
+  const setUserFormSubmit = () => {
     adForm.addEventListener('submit', (event) => {
       event.preventDefault();
       titleValidation;
       priceValidation;
-      capacityValidation;
+      capacityValidationExecution();
 
-      const formData = new FormData(event.target);
+      // const formData = new FormData(event.target);
 
-      fetch(
-        'https://23.javascript.pages.academy/keksobooking',
-        {
-          method: 'POST',
-          body: formData,
-        },
-      ).then((response) => {
-        if (response.ok) {
-          onSuccess();
-        } else {
-          onError();
-        }
-      })
-        .catch(() => {
-          onError();
-        });
+      // fetch(
+      //   'https://23.javascript.pages.academy/keksobooking',
+      //   {
+      //     method: 'POST',
+      //     body: formData,
+      //   },
+      // ).then((response) => {
+      //   if (response.ok) {
+      //     onSuccess();
+      //   } else {
+      //     onError();
+      //   }
+      // })
+      //   .catch(() => {
+      //     console.log('Ошибка в отправке')
+      // });
     });
-
-    clearForm();
   };
 
   setUserFormSubmit(showSuccessPopup, showErrorPopup);
 
   // Навешивает на кнопку очистки очистку формы
-
-  const adResetButton = document.querySelector('.ad-form__reset');
   const resetForm = () => {
     adResetButton.addEventListener('click', () => {
       clearForm();
@@ -262,6 +260,4 @@ const validation = () => {
   resetForm();
 };
 
-
-export {validation};
-
+export {validationExecution};

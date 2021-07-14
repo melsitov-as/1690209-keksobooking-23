@@ -1,17 +1,16 @@
 
-import {mapMarkersExe} from './map-markers.js';
-import { validation } from './validation.js';
-import {showErrorPopup} from './error-popup.js';
+import {operateMapMarkers} from './map-markers.js';
+import { validationExecution } from './validation.js';
+
 
 // 1. Получить данные с сервера
-let serverData;
+
 const getServerData = () => {
   fetch ('https://23.javascript.pages.academy/keksobooking/data')
     .then((responce) => responce.json())
-    .then((data) => serverData = data)
-    .then(() => mapMarkersExe(serverData))
-    .then(() => validation())
-    .catch(() => showErrorPopup());
+    .then((data) => operateMapMarkers(data))
+    .then(() => validationExecution());
+  // .catch(() => showErrorPopup());
 };
 
 getServerData();

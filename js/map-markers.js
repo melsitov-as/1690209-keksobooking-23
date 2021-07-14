@@ -3,9 +3,28 @@ import { adFormEnableActive, mapFiltersEnableActive } from './enable-active.js';
 import { generateBaloon } from './generate-elements.js';
 import {debounce} from './utils/debounce.js';
 
-const rerenderDelay = 500;
+const RERENDER_DELAY = 500;
+
+const addressInput = document.querySelector('#address');
+const mapFilters = document.querySelector('.map__filters');
+const housingType = mapFilters.querySelector('#housing-type');
+const housingTypeOptionsList = housingType.querySelectorAll('option');
+const housingPrice = mapFilters.querySelector('#housing-price');
+const housingPriceOptionsList = housingPrice.querySelectorAll('option');
+const housingNumberOfRooms = mapFilters.querySelector('#housing-rooms');
+const housingRoomsOptionsList = housingNumberOfRooms.querySelectorAll('option');
+const housingNumberOfGuests = mapFilters.querySelector('#housing-guests');
+const housingGuestsOptionsList = housingNumberOfGuests.querySelectorAll('option');
+const housingFeatures = mapFilters.querySelector('#housing-features');
+const wifiCheckbox = housingFeatures.querySelector('#filter-wifi');
+const dishwasherCheckbox = housingFeatures.querySelector('#filter-dishwasher');
+const parkingCheckbox = housingFeatures.querySelector('#filter-parking');
+const washerCheckbox = housingFeatures.querySelector('#filter-washer');
+const elevatorCheckbox = housingFeatures.querySelector('#filter-elevator');
+const conditionerCheckbox = housingFeatures.querySelector('#filter-conditioner');
+
 //  Работа с картой и маркерами
-const mapMarkersExe = (serverData) => {
+const operateMapMarkers = (serverData) => {
   const mapCanvas = L.map('map-canvas')
     .on('load', () => adFormEnableActive())
     .setView({
@@ -42,14 +61,14 @@ const mapMarkersExe = (serverData) => {
 
   // Добавляет координаты в инпут с адресом
 
-  const addressInput = document.querySelector('#address');
+  addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
+  addressInput.placeholder = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
 
-
-  addressInput.value = `lat: ${parseFloat((35.556161).toFixed(5))}, lng: ${parseFloat((139.7580223).toFixed(5))}`;
 
   mainPinMarker.on('moveend', (evt) => {
     const mainPinMarkerAddress = evt.target.getLatLng();
-    addressInput.value = `lat: ${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, lng: ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
+    addressInput.value = `${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
+    addressInput.placeholder = `${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
   });
 
   // Добавляет маркеры
@@ -79,20 +98,17 @@ const mapMarkersExe = (serverData) => {
         .addTo(markerGroup)
         .bindPopup(generateBaloon(point));
     });
-  }, rerenderDelay ));
+  }, RERENDER_DELAY ));
 
   addMarkers(serverData);
 
   const changeMarkersByFilters = () => {
 
-    const mapFilters = document.querySelector('.map__filters');
+
     mapFilters.addEventListener('change', () => {
       let filteredServerData = serverData;
       // Изменяем данные с сервера по фильтру "Тип жилья"
-      const housingType = mapFilters.querySelector('#housing-type');
-      const housingTypeOptionsList = housingType.querySelectorAll('option');
-      let typeOption;
-      for (typeOption of housingTypeOptionsList) {
+      housingTypeOptionsList.forEach((typeOption) => {
         if (typeOption.selected === true) {
           if (typeOption.value === 'any') {
             filteredServerData = serverData.filter((point) => point.offer.type);
@@ -100,13 +116,10 @@ const mapMarkersExe = (serverData) => {
             filteredServerData = serverData.filter((point) => point.offer.type === typeOption.value);
           }
         }
-      }
+      });
 
       // Изменяем данные с сервера по фильтру "Стоимость жилья"
-      const housingPrice = mapFilters.querySelector('#housing-price');
-      const housingPriceOptionsList = housingPrice.querySelectorAll('option');
-      let housingPriceOption;
-      for (housingPriceOption of housingPriceOptionsList) {
+      housingPriceOptionsList.forEach((housingPriceOption) => {
         if (housingPriceOption.selected === true) {
           if (housingPriceOption.value === 'any') {
             filteredServerData = filteredServerData.filter((point) => point.offer.price);
@@ -118,50 +131,43 @@ const mapMarkersExe = (serverData) => {
             filteredServerData = filteredServerData.filter((point) => Number(point.offer.price) >= 50000);
           }
         }
-      }
+      });
 
       // Изменяем данные с сервера по фильтру "Количество комнат"
-      const housingNumberOfRooms = mapFilters.querySelector('#housing-rooms');
-      const housingRoomsOptionsList = housingNumberOfRooms.querySelectorAll('option');
-      let roomsOption;
-      for (roomsOption of housingRoomsOptionsList) {
+      housingRoomsOptionsList.forEach((roomsOption) => {
         if (roomsOption.selected === true) {
           if (roomsOption.value === 'any') {
             filteredServerData = filteredServerData.filter((point) => point.offer.rooms);
           } else if (roomsOption.value === '1') {
-            filteredServerData = filteredServerData.filter((point) => point.offer.rooms === '1');
+            filteredServerData = filteredServerData.filter((point) => Number(point.offer.rooms) === 1);
           } else if (roomsOption.value === '2') {
-            filteredServerData = filteredServerData.filter((point) => point.offer.rooms === '2');
+            filteredServerData = filteredServerData.filter((point) => Number(point.offer.rooms) === 2);
           } else {
-            filteredServerData = filteredServerData.filter((point) => point.offer.rooms === '3');
+            filteredServerData = filteredServerData.filter((point) => Number(point.offer.rooms) === 3);
           }
         }
-      }
+      });
 
 
       // Изменяем данные с сервера по фильтру "Количество гостей"
-      const housingNumberOfGuests = mapFilters.querySelector('#housing-guests');
-      const housingGuestsOptionsList = housingNumberOfGuests.querySelectorAll('option');
-      let guestsOption;
-      for (guestsOption of housingGuestsOptionsList) {
+      housingGuestsOptionsList.forEach((guestsOption) => {
         if (guestsOption.selected === true) {
           if (guestsOption.value === 'any') {
             filteredServerData = filteredServerData.filter((point) => point.offer.guests);
           } else if (guestsOption.value === '0') {
-            filteredServerData = filteredServerData.filter((point) => point.offer.guests === '0');
+            filteredServerData = filteredServerData.filter((point) => Number(point.offer.guests) === 0);
           } else if (guestsOption.value === '1') {
-            filteredServerData = filteredServerData.filter((point) => point.offer.guests === '1');
+            filteredServerData = filteredServerData.filter((point) => Number(point.offer.guests) === 1);
           } else if (guestsOption.value === '2') {
-            filteredServerData = filteredServerData.filter((point) => point.offer.guests === '2');
+            filteredServerData = filteredServerData.filter((point) => Number(point.offer.guests) === 2);
           }
         }
-      }
+      });
 
       // Изменяем данные с сервера по фильтру "Удобства" с выбранными чекбоксами
-      const housingFeatures = mapFilters.querySelector('#housing-features');
+
 
       // Выбираем чекбокс "wifi" и добавляем фильтрацию убобств по "wifi"
-      const wifiCheckbox = housingFeatures.querySelector('#filter-wifi');
       if (wifiCheckbox.checked) {
         filteredServerData = filteredServerData.filter((point) => point.offer.features);
         filteredServerData = filteredServerData.filter((point) => (point.offer.features).indexOf('wifi') === -1);
@@ -170,7 +176,7 @@ const mapMarkersExe = (serverData) => {
       }
 
       // Выбираем чекбокс "dishwasher" и добавляем фильтрацию удобств по "dishwasher"
-      const dishwasherCheckbox = housingFeatures.querySelector('#filter-dishwasher');
+
       if (dishwasherCheckbox.checked) {
         filteredServerData = filteredServerData.filter((point) => point.offer.features);
         filteredServerData = filteredServerData.filter((point) => (point.offer.features).indexOf('dishwasher') === -1);
@@ -179,7 +185,6 @@ const mapMarkersExe = (serverData) => {
       }
 
       // Выбираем чекбокс "parking" и добавляем фильтрацию удобств по "parking"
-      const parkingCheckbox = housingFeatures.querySelector('#filter-parking');
       if (parkingCheckbox.checked) {
         filteredServerData = filteredServerData.filter((point) => point.offer.features);
         filteredServerData = filteredServerData.filter((point) => (point.offer.features).indexOf('parking') === -1);
@@ -188,7 +193,7 @@ const mapMarkersExe = (serverData) => {
       }
 
       // Выбираем чекбокс "washer" и добавляем фильтрацию удобств по "washer"
-      const washerCheckbox = housingFeatures.querySelector('#filter-washer');
+
       if (washerCheckbox.checked) {
         filteredServerData = filteredServerData.filter((point) => point.offer.features);
         filteredServerData = filteredServerData.filter((point) => (point.offer.features).indexOf('washer') === -1);
@@ -197,7 +202,6 @@ const mapMarkersExe = (serverData) => {
       }
 
       // Выбираем чекбокс "elevator" и добавляем фильтрацию удобств по "elevator"
-      const elevatorCheckbox = housingFeatures.querySelector('#filter-elevator');
       if (elevatorCheckbox.checked) {
         filteredServerData = filteredServerData.filter((point) => point.offer.features);
         filteredServerData = filteredServerData.filter((point) => (point.offer.features).indexOf('elevator') === -1);
@@ -206,7 +210,6 @@ const mapMarkersExe = (serverData) => {
       }
 
       // Выбираем чекбокс "conditioner" и добавляем фильтрацию удобств по "conditioner"
-      const conditionerCheckbox = housingFeatures.querySelector('#filter-conditioner');
       if (conditionerCheckbox.checked) {
         filteredServerData = filteredServerData.filter((point) => point.offer.features);
         filteredServerData = filteredServerData.filter((point) => (point.offer.features).indexOf('conditioner') === -1);
@@ -225,4 +228,4 @@ const mapMarkersExe = (serverData) => {
   changeMarkersByFilters(serverData);
 };
 
-export {mapMarkersExe};
+export {operateMapMarkers};
