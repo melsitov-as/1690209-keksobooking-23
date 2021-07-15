@@ -4,8 +4,11 @@ const validationExecution = () => {
   const MAX_TITLE_LENGTH = 100;
   let minPrice = 0;
   const MAX_PRICE = 1000000;
+  let roomsNumber = 1;
+  let capacityValue = 3;
   let checkinTime = '12:00';
   let checkoutTime = '12:00';
+
 
   const typeSelect = document.querySelector('#type');
   const priceInput = document.querySelector('#price');
@@ -22,19 +25,21 @@ const validationExecution = () => {
   const errorPopup = document.querySelector('#error');
   const errorPopupTemplate = errorPopup.content.querySelector('.error');
   const adResetButton = document.querySelector('.ad-form__reset');
-
   const addressInput = document.querySelector('#address');
   const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
+  const roomsNumberSelect = document.querySelector('#room_number');
+  const capacitySelect = document.querySelector('#capacity');
+  const roomNumberOptionDefault = roomsNumberSelect.querySelector('option[value="1"]')
+  const capacityOptionDefault = capacitySelect.querySelector('option[value="3"]')
   const timeinSelect = document.querySelector('#timein');
   const timeinOptionDefault = timeinSelect.querySelector('option[value="12:00"]');
   const timeoutSelect = document.querySelector('#timeout');
   const timeoutOptionDefault = timeoutSelect.querySelector('option[value="12:00"]');
-  // const roomNumberSelect = document.querySelector('#room_number');
   const featuresInputs = document.querySelectorAll('.features__checkbox');
   const descriptionTextarea = document.querySelector('#description');
 
   // Валидация длины заголовка
-  const titleValidation = () => {
+  const onTitleValidation = () => {
     const valueLength = titleInput.value.length;
 
     if (valueLength < MIN_TITLE_LENGTH) {
@@ -46,10 +51,10 @@ const validationExecution = () => {
     }
   };
 
-  titleInput.addEventListener('input', titleValidation);
+  titleInput.addEventListener('input', onTitleValidation);
 
   // Валидация цены за ночь
-  const minPriceChangeHandler = (evt) => {
+  const onMinPriceChangeHandle = (evt) => {
     if (evt.target.value === 'bungalow') {
       minPrice = 0;
       priceInput.placeholder = '0';
@@ -73,9 +78,9 @@ const validationExecution = () => {
     }
   };
 
-  typeSelect.addEventListener('change', minPriceChangeHandler);
+  typeSelect.addEventListener('change', onMinPriceChangeHandle);
 
-  const priceValidation = () => {
+  const onPriceValidation = () => {
     const price = Number(priceInput.value);
 
     if (price < minPrice) {
@@ -87,43 +92,53 @@ const validationExecution = () => {
     }
   };
 
-  priceInput.addEventListener('input', priceValidation);
+  priceInput.addEventListener('input', onPriceValidation);
 
 
   //Валидация количества комнат и количества мест
-  let roomsNumber = 1;
-  let capacityValue = 3;
-  const roomsNumberSelect = document.querySelector('#room_number');
-  const capacitySelect = document.querySelector('#capacity');
 
 
-  const changeMaxNumberOfGuestValue = (evt) => {
+
+
+  const onChangeMaxNumberOfGuestValue = (evt) => {
     roomsNumber = Number(evt.target.value);
     // console.log(roomsNumber);
     return roomsNumber;
   };
 
-  roomsNumberSelect.addEventListener('change', changeMaxNumberOfGuestValue );
+  roomsNumberSelect.addEventListener('change', onChangeMaxNumberOfGuestValue );
 
-  const changeCapacityValue = (evt) => {
+  const onChangeCapacityValue = (evt) => {
     capacityValue = Number(evt.target.value);
     // console.log(capacityValue);
     return capacityValue;
   };
 
-  capacitySelect.addEventListener('change', changeCapacityValue);
+  capacitySelect.addEventListener('change', onChangeCapacityValue);
 
-  const capacityValidationExecution = () => {
+  const onCapacityValidationExecution = () => {
     if (roomsNumber === 100 && capacityValue !== 0) {
-    // console.log('Клик')
       capacitySelect.setCustomValidity('Помещения, в которых 100 комнат не предназначены для размещения гостей');
+      console.log('Клик');
+    } else if (roomsNumber < 100 && capacityValue === 0) {
+      capacitySelect.setCustomValidity('В помещениях, в которых меньше 100 комнат обязательно надо указывать количество мест')
+    } else if (roomsNumber < 100 && capacityValue > roomsNumber) {
+      capacitySelect.setCustomValidity('Количество мест не должно превышать количество комнат')
+    } else {
+      capacitySelect.setCustomValidity('');
     }
+    capacitySelect.reportValidity();
   };
-  capacityValidationExecution();
+
+  capacitySelect.addEventListener('change', (evt) => {
+    onChangeCapacityValue(evt),
+    onCapacityValidationExecution()
+  });
+
 
   // Валидация въезд - выезд
 
-  const checkinChangeHandler = (evt) => {
+  const onCheckinChangeHandle = (evt) => {
     checkinTime = evt.target.value;
     for (let ii = 0; ii < checkoutOptionsList.length; ii++) {
       if (checkoutOptionsList[ii].value === checkinTime) {
@@ -132,7 +147,7 @@ const validationExecution = () => {
     }
   };
 
-  const checkoutChangeHandler = (evt) => {
+  const onCheckoutChangeHandle = (evt) => {
     checkoutTime = evt.target.value;
     for (let ii = 0; ii < checkinOptionsList.length; ii++) {
       if (checkinOptionsList[ii].value === checkoutTime) {
@@ -141,21 +156,21 @@ const validationExecution = () => {
     }
   };
 
-  checkin.addEventListener('change', checkinChangeHandler);
-  checkout.addEventListener('change', checkoutChangeHandler);
+  checkin.addEventListener('change', onCheckinChangeHandle);
+  checkout.addEventListener('change', onCheckoutChangeHandle);
 
   // Очищает форму
 
-  const clearForm = () => {
+  const onClearForm = () => {
     titleInput.value = '';
     addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
-    addressInput.placeholder = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
+    // addressInput.placeholder = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
     optionValueDefault.selected = true;
     priceInput.value = '';
     timeinOptionDefault.selected = true;
     timeoutOptionDefault.selected = true;
-    // roomNumberOptionDefault.selected = true;
-    // capacityOptionDefault.selected = true;
+    roomNumberOptionDefault.selected = true;
+    capacityOptionDefault.selected = true;
     for (const featureInput of featuresInputs) {
       featureInput.checked = false;
     }
@@ -165,7 +180,7 @@ const validationExecution = () => {
 
   // Показыват попап об успешной отправке сообщения
 
-  const showSuccessPopup = () => {
+  const onShowSuccessPopup = () => {
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
     clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
@@ -178,7 +193,7 @@ const validationExecution = () => {
       if (body.querySelector('.cloned-success-popup')) {
         if (evt.key === 'Escape' || evt.key === 'esc') {
           body.removeChild(clonedSuccessPopupTemplate);
-          clearForm();
+          onClearForm();
         }
       }
     });
@@ -186,7 +201,7 @@ const validationExecution = () => {
     document.addEventListener('click', () => {
       if (body.querySelector('.cloned-success-popup')) {
         body.removeChild(clonedSuccessPopupTemplate);
-        clearForm();
+        onClearForm();
       }
 
     });
@@ -194,7 +209,7 @@ const validationExecution = () => {
 
   // Показывает попап об ошибке в отправке сообщения
 
-  const showErrorPopup = () => {
+  const onShowErrorPopup = () => {
     const clonedErrorPopupTemplate = errorPopupTemplate.cloneNode(true);
     clonedErrorPopupTemplate.classList.add('.cloned-error-popup');
     clonedErrorPopupTemplate.style.position = 'absolute';
@@ -220,40 +235,41 @@ const validationExecution = () => {
 
   // Событие при отправке формы
 
-  const setUserFormSubmit = () => {
+  const setUserFormSubmit = (onSuccess, onError) => {
     adForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      titleValidation;
-      priceValidation;
-      capacityValidationExecution();
+        event.preventDefault();
+        onTitleValidation;
+        onPriceValidation;
+        onCapacityValidationExecution();
 
-      // const formData = new FormData(event.target);
 
-      // fetch(
-      //   'https://23.javascript.pages.academy/keksobooking',
-      //   {
-      //     method: 'POST',
-      //     body: formData,
-      //   },
-      // ).then((response) => {
-      //   if (response.ok) {
-      //     onSuccess();
-      //   } else {
-      //     onError();
-      //   }
-      // })
-      //   .catch(() => {
-      //     console.log('Ошибка в отправке')
-      // });
+      const formData = new FormData(event.target);
+
+      fetch(
+        'https://23.javascript.pages.academy/keksobooking',
+        {
+          method: 'POST',
+          body: formData,
+        },
+      ).then((response) => {
+        if (response.ok) {
+          onSuccess();
+        } else {
+          onError();
+        }
+      })
+        .catch(() => {
+          console.log('Ошибка в отправке')
+      });
     });
   };
 
-  setUserFormSubmit(showSuccessPopup, showErrorPopup);
+  setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup);
 
   // Навешивает на кнопку очистки очистку формы
   const resetForm = () => {
     adResetButton.addEventListener('click', () => {
-      clearForm();
+      onClearForm();
     });
   };
 
