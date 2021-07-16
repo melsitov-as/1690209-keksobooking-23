@@ -1,6 +1,7 @@
 
 import {operateMapMarkers} from './map-markers.js';
 import { validationExecution } from './validation.js';
+import './generate-elements.js'
 
 
 // 1. Получить данные с сервера

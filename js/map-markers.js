@@ -96,7 +96,7 @@ const operateMapMarkers = (serverData) => {
 
       marker
         .addTo(markerGroup)
-        .bindPopup(generateBaloon(point));
+        .bindPopup(generateBaloon());
     });
   }, RERENDER_DELAY ));
 

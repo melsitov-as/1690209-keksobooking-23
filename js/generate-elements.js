@@ -1,6 +1,20 @@
 
-// const offerTemplate = document.querySelector('#card').cloneNode(true);
-// const popup = offerTemplate.querySelector('.popup');
+const generateBaloon = () => {
+  const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
+  const clonedCardTemplate = cardTemplate.cloneNode(true);
+  const offer = document.createDocumentFragment();
+  offer.appendChild(clonedCardTemplate);
+  console.log(offer)
+  console.log(cardTemplate)
+
+  return offer;
+}
+
+export {generateBaloon};
+
+
+
+// const cardTemplate = document.querySelector('#card').content;
 // const offerAvatar = cardTemplate.querySelector('.popup__avatar');
 // const offerTitle = cardTemplate.querySelector('.popup__title');
 // const offerAddress = cardTemplate.querySelector('.popup__text--address');
@@ -13,111 +27,117 @@
 // const offerLodgingPhotos = cardTemplate.querySelector('.popup__photos');
 // const offerLodgingPhoto = cardTemplate.querySelector('.popup__photo');
 
-// Сгенерировать балун
+// // Сгенерировать балун
 // const generateBaloon = (point) => {
 
-  // Аватар
+//   const offer = document.createDocumentFragment();
 
-  // Заголовок балуна
+//   // Аватар
+//   const avatarAddress = point.author.avatar;
+//   offerAvatar.src = avatarAddress;
+//   const clonedOfferAvatar = offerAvatar.cloneNode(true);
+//   offer.appendChild(clonedOfferAvatar);
 
-  // const clonedOfferTitle = offerTitle.cloneNode(true);
-  // clonedOfferTitle.textContent = point.offer.title;
-  // offer.appendChild(clonedOfferTitle);
+//   // Заголовок балуна
 
-  // Адрес в балуне
+//   const clonedOfferTitle = offerTitle.cloneNode(true);
+//   clonedOfferTitle.textContent = point.offer.title;
+//   offer.appendChild(clonedOfferTitle);
 
-  // const clonedOfferAddress = offerAddress.cloneNode(true);
-  // clonedOfferAddress.textContent = point.offer.address;
-  // offer.appendChild(clonedOfferAddress);
+//   // Адрес в балуне
 
-  // Цена в балуне
+//   const clonedOfferAddress = offerAddress.cloneNode(true);
+//   clonedOfferAddress.textContent = point.offer.address;
+//   offer.appendChild(clonedOfferAddress);
 
-  // const clonedOfferPrice = offerPrice.cloneNode(true);
-  // clonedOfferPrice.textContent = `${point.offer.price} ₽/ночь`;
-  // offer.appendChild(clonedOfferPrice);
+//   // Цена в балуне
 
-  // Тип жилья
+//   const clonedOfferPrice = offerPrice.cloneNode(true);
+//   clonedOfferPrice.textContent = `${point.offer.price} ₽/ночь`;
+//   offer.appendChild(clonedOfferPrice);
 
-  // const clonedOfferLodgingType = offerLodgingType.cloneNode(true);
-  // switch(point.offer.type) {
-  //   case point.offer.type = 'flat':
-  //     clonedOfferLodgingType.textContent = 'Квартира';
-  //     break;
-  //   case point.offer.type = 'bungalow':
-  //     clonedOfferLodgingType.textContent = 'Бунгало';
-  //     break;
-  //   case point.offer.type = 'house':
-  //     clonedOfferLodgingType.textContent = 'Дом';
-  //     break;
-  //   case point.offer.type = 'palace':
-  //     clonedOfferLodgingType.textContent = 'Дворец';
-  //     break;
-  //   case point.offer.type = 'hotel':
-  //     clonedOfferLodgingType.textContent = 'Отель';
-  //     break;
-  // }
-  // offer.appendChild(clonedOfferLodgingType);
+//   // Тип жилья
 
-  // Количество комнат и гостей
-  // const numberOfRooms = point.offer.rooms;
-  // const numberOfGuests = point.offer.guests;
-  // const clonedOfferRoomsGuests = offerRoomsGuests.cloneNode(true);
-  // let roomsCount;
-  // if (numberOfRooms % 10 === 0 || (numberOfRooms % 10 >= 5 && numberOfRooms <= 9)) {
-  //   roomsCount = 'комнат';
-  // } else if (numberOfRooms % 10 === 1) {
-  //   roomsCount = 'комната';
-  // } else if (numberOfRooms % 10 >= 2 && numberOfRooms <= 4) {
-  //   roomsCount = 'комнаты';
-  // }
-  // clonedOfferRoomsGuests.textContent = `${numberOfRooms} ${roomsCount} для ${numberOfGuests} гостей`;
-  // offer.appendChild(clonedOfferRoomsGuests);
+//   const clonedOfferLodgingType = offerLodgingType.cloneNode(true);
+//   switch(point.offer.type) {
+//     case point.offer.type = 'flat':
+//       clonedOfferLodgingType.textContent = 'Квартира';
+//       break;
+//     case point.offer.type = 'bungalow':
+//       clonedOfferLodgingType.textContent = 'Бунгало';
+//       break;
+//     case point.offer.type = 'house':
+//       clonedOfferLodgingType.textContent = 'Дом';
+//       break;
+//     case point.offer.type = 'palace':
+//       clonedOfferLodgingType.textContent = 'Дворец';
+//       break;
+//     case point.offer.type = 'hotel':
+//       clonedOfferLodgingType.textContent = 'Отель';
+//       break;
+//   }
+//   offer.appendChild(clonedOfferLodgingType);
 
-  // Въезд -выезд
+//   // Количество комнат и гостей
+//   const numberOfRooms = point.offer.rooms;
+//   const numberOfGuests = point.offer.guests;
+//   const clonedOfferRoomsGuests = offerRoomsGuests.cloneNode(true);
+//   let roomsCount;
+//   if (numberOfRooms % 10 === 0 || (numberOfRooms % 10 >= 5 && numberOfRooms <= 9)) {
+//     roomsCount = 'комнат';
+//   } else if (numberOfRooms % 10 === 1) {
+//     roomsCount = 'комната';
+//   } else if (numberOfRooms % 10 >= 2 && numberOfRooms <= 4) {
+//     roomsCount = 'комнаты';
+//   }
+//   clonedOfferRoomsGuests.textContent = `${numberOfRooms} ${roomsCount} для ${numberOfGuests} гостей`;
+//   offer.appendChild(clonedOfferRoomsGuests);
 
-  // const clonedCheckinCheckout = checkinCheckout.cloneNode(true);
-  // const checkin = point.offer.checkin;
-  // const checkout = point.offer.checkout;
-  // clonedCheckinCheckout.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-  // offer.appendChild(clonedCheckinCheckout);
+//   // Въезд -выезд
 
-  // Удобства
+//   const clonedCheckinCheckout = checkinCheckout.cloneNode(true);
+//   const checkin = point.offer.checkin;
+//   const checkout = point.offer.checkout;
+//   clonedCheckinCheckout.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
+//   offer.appendChild(clonedCheckinCheckout);
 
-  // const clonedOfferFeatures = offerFeatures.cloneNode(true);
-  // const offerFeaturesList = point.offer.features;
-  // if (offerFeaturesList) {
-  //   const modifiers = offerFeaturesList.map((feature) => `popup__feature--${feature}`);
-  //   clonedOfferFeatures.querySelectorAll('.popup__feature').forEach((item) => {
-  //     const modifier = item.classList[1];
-  //     if (modifiers.includes(modifier)) {
-  //       item.remove();
-  //     }
-  //   });
-  //   offer.appendChild(clonedOfferFeatures);
-  // }
+//   // Удобства
 
-  // Описание
+//   const clonedOfferFeatures = offerFeatures.cloneNode(true);
+//   const offerFeaturesList = point.offer.features;
+//   if (offerFeaturesList) {
+//     const modifiers = offerFeaturesList.map((feature) => `popup__feature--${feature}`);
+//     clonedOfferFeatures.querySelectorAll('.popup__feature').forEach((item) => {
+//       const modifier = item.classList[1];
+//       if (modifiers.includes(modifier)) {
+//         item.remove();
+//       }
+//     });
+//     offer.appendChild(clonedOfferFeatures);
+//   }
 
-  // const clonedOfferDescription = offerDescription.cloneNode(true);
-  // const offerDescriptionText = point.offer.description;
-  // clonedOfferDescription.textContent = offerDescriptionText;
-  // offer.appendChild(clonedOfferDescription);
+//   // Описание
 
-  // Фото жилья
-  // const offerLodgingPhotosList = point.offer.photos;
-  // const clonedOfferLodgingPhotos = offerLodgingPhotos.cloneNode(true);
-  // if (offerLodgingPhotosList) {
-  //   for (let ii = 0; ii < offerLodgingPhotosList.length; ii++) {
-  //     const clonedOfferLodgingPhoto = offerLodgingPhoto.cloneNode(true);
-  //     clonedOfferLodgingPhoto.src = offerLodgingPhotosList[ii];
-  //     clonedOfferLodgingPhotos.appendChild(clonedOfferLodgingPhoto);
-  //   }
-  //   const clonedPhotosList = clonedOfferLodgingPhotos.querySelectorAll('.popup__photo');
-  //   clonedOfferLodgingPhotos.removeChild(clonedPhotosList[0]);
-  //   offer.appendChild(clonedOfferLodgingPhotos);
-  // }
+//   const clonedOfferDescription = offerDescription.cloneNode(true);
+//   const offerDescriptionText = point.offer.description;
+//   clonedOfferDescription.textContent = offerDescriptionText;
+//   offer.appendChild(clonedOfferDescription);
 
-//   return offerTemplate;
+//   // Фото жилья
+//   const offerLodgingPhotosList = point.offer.photos;
+//   const clonedOfferLodgingPhotos = offerLodgingPhotos.cloneNode(true);
+//   if (offerLodgingPhotosList) {
+//     for (let ii = 0; ii < offerLodgingPhotosList.length; ii++) {
+//       const clonedOfferLodgingPhoto = offerLodgingPhoto.cloneNode(true);
+//       clonedOfferLodgingPhoto.src = offerLodgingPhotosList[ii];
+//       clonedOfferLodgingPhotos.appendChild(clonedOfferLodgingPhoto);
+//     }
+//     const clonedPhotosList = clonedOfferLodgingPhotos.querySelectorAll('.popup__photo');
+//     clonedOfferLodgingPhotos.removeChild(clonedPhotosList[0]);
+//     offer.appendChild(clonedOfferLodgingPhotos);
+//   }
+
+//   return offer;
 // };
 
 
