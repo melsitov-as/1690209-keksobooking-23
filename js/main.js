@@ -1,14 +1,15 @@
-import {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, changeMainPinMarkerCoordinates, addMarkersLayer, addMarkers, markerGroup } from './map-markers.js';
 
-const getServerData = () => {
-  fetch ('https://23.javascript.pages.academy/keksobooking/data')
-    .then((responce) => responce.json())
-    .then(() => loadMap())
-    .then(() => addMainPinMarker(mapCanvas))
-    .then(() => changeMainPinMarkerCoordinates(mainPinMarker))
-    .then(() => addMarkersLayer(mapCanvas))
-    .then((data) => addMarkers(data, markerGroup))
-  // .catch(() => showErrorPopup());
-};
+import { loadMap, mapCanvas, addMainPinMarker, addressInput, mainPinMarker, changeAdressInputValue, addMarkersLayer, markersGroup, addMarkers  } from './map-markers.js';
+import { getServerData, serverData } from './server-interaction.js'
 
 getServerData();
+loadMap();
+addMainPinMarker(mapCanvas);
+changeAdressInputValue(mainPinMarker);
+addMarkersLayer(mapCanvas);
+console.log(getServerData())
+addMarkers(serverData, markersGroup);
+
+
+
+

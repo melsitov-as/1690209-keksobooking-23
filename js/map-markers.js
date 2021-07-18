@@ -1,7 +1,8 @@
 
 import { adFormEnableActive, mapFiltersEnableActive } from './enable-active.js';
 import { generateBaloon } from './generate-elements.js';
-import {debounce} from './utils/debounce.js';
+import { debounce } from './utils/debounce.js';
+import { serverData } from './server-interaction.js';
 
 const addressInput = document.querySelector('#address');
 const mapFilters = document.querySelector('.map__filters');
@@ -81,25 +82,25 @@ const addMainPinMarker = (mapCanvas) => {
 
 // Меняет координаты инпута с адресом по смене положения маркера
 
-const changeMainPinMarkerCoordinates = (mainPinMarker) => {
+const changeAdressInputValue = (mainPinMarker) => {
   mainPinMarker.on('moveend', (evt) => {
     const mainPinMarkerAddress = evt.target.getLatLng();
     addressInput.value = `${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
   });
 }
 
-let markerGroup;
+let markersGroup;
 
 const addMarkersLayer = (mapCanvas) => {
-  markerGroup = L.layerGroup().addTo(mapCanvas);
+  markersGroup = L.layerGroup().addTo(mapCanvas);
 
-  return markerGroup;
+  return markersGroup;
 }
 
 
 // Добавляет маркеры
 
-const addMarkers = (debounce((data, markerGroup) => {
+const addMarkers = (debounce((data, markersGroup) => {
   mapFiltersEnableActive();
   (data.slice(0, 10)).forEach((point) => {
     const markerIcon = L.icon({
@@ -119,12 +120,179 @@ const addMarkers = (debounce((data, markerGroup) => {
     );
 
     marker
-      .addTo(markerGroup)
+      .addTo(markersGroup)
       .bindPopup(generateBaloon(point));
     });
   }, RERENDER_DELAY ));
 
-export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, changeMainPinMarkerCoordinates, addMarkersLayer, addMarkers, markerGroup}
+
+// Фильтр
+  let comparedTypeValue = 'any';
+  let comparedPriceValue = 'any';
+  let comparedRoomsValue = 'any';
+  let comparedGuestsValue = 'any';
+
+  const changeMarkersByFilters = (serverData, markersGroup) => {
+    mapFilters.addEventListener('change', () => {
+      let filteredServerData = serverData;
+
+      // Получаем данные для фильтра для типа жилья
+      housingTypeOptionsList.forEach((option) => {
+        if (option.selected) {
+          comparedTypeValue = option.value;
+        }
+      });
+
+      // Получаем данные для фильтра по стоимости аренды
+      housingPriceOptionsList.forEach((option) => {
+        if (option.selected) {
+          comparedPriceValue = option.value;
+        }
+      });
+
+      // Получаем данные для фильтра по количеству комнат
+      housingRoomsOptionsList.forEach((option) => {
+        if (option.selected) {
+          comparedRoomsValue = option.value;
+        }
+      });
+
+      // Получаем данные для фильтра по количеству гостей
+      housingGuestsOptionsList.forEach((option) => {
+        if (option.selected) {
+          comparedGuestsValue = option.value;
+        }
+      });
+
+      //Фильтр для типа жилья
+      const onTypeFilter = (point) => {
+        if (comparedTypeValue === 'any') {
+          return point.offer.type;
+        } else {
+          return point.offer.type === comparedTypeValue;
+        }
+      };
+
+      // Фильтр для стоимости жилья
+      const onPriceFilter = (point) => {
+        if (comparedPriceValue === 'any') {
+          return point.offer.price;
+        } else if (comparedPriceValue === 'low') {
+          return Number(point.offer.price) < 10000;
+        } else if (comparedPriceValue === 'middle') {
+          return Number(point.offer.price) >= 10000 && Number(point.offer.price) < 50000;
+        } else {
+          return Number(point.offer.price) >= 50000;
+        }
+      };
+
+      //Фильтр для количества комнат
+      const onRoomsFilter = (point) => {
+        if (comparedRoomsValue === 'any') {
+          return point.offer.rooms;
+        } else if (comparedRoomsValue === '1') {
+          return Number(point.offer.rooms) === 1;
+        } else if (comparedRoomsValue === '2') {
+          return Number(point.offer.rooms) === 2;
+        } else {
+          return Number(point.offer.rooms) === 3;
+        }
+      };
+
+      // Фильтр для количества гостей
+      const onGuestsFilter = (point) => {
+        if (comparedGuestsValue === 'any') {
+          return point.offer.guests;
+        } else if (comparedGuestsValue === '0') {
+          return Number(point.offer.guests) === 0;
+        } else if (comparedGuestsValue === '1') {
+          return Number(point.offer.guests) === 1;
+        } else {
+          return Number(point.offer.guests) === 2;
+        }
+      };
+
+      //Фильтр по удобству wifi
+      const onWifiFilter = (point) => {
+        if (wifiCheckbox.checked) {
+          return point.offer.features && (point.offer.features).indexOf('wifi') > -1;
+        } else {
+          return point.offer;
+        }
+      };
+
+      //Фильтр по удобству dishwaher
+      const onDishwasherFilter = (point) => {
+        if (dishwasherCheckbox.checked) {
+          return point.offer.features && (point.offer.features).indexOf('dishwasher') > -1;
+        } else {
+          return point.offer;
+        }
+      };
+
+      // Фильтр по удобству parking
+      const onParkingFilter = (point) => {
+        if (parkingCheckbox.checked) {
+          return point.offer.features && (point.offer.features).indexOf('parking') > -1;
+        } else {
+          return point.offer;
+        }
+      };
+
+      // Фильтр по удобстству washer
+      const onWasherFilter = (point) => {
+        if (washerCheckbox.checked) {
+          return point.offer.features && (point.offer.features).indexOf('washer') > -1;
+        } else {
+          return point.offer;
+        }
+      };
+
+      // Фильтр по удобстству elevator
+      const onElevatorFilter = (point) => {
+        if (elevatorCheckbox.checked) {
+          return point.offer.features && (point.offer.features).indexOf('elevator') > -1;
+        } else {
+          return point.offer;
+        }
+      };
+
+       // Фильтр по удобстству conditioner
+       const onConditionerFilter = (point) => {
+        if (conditionerCheckbox.checked) {
+          return point.offer.features && (point.offer.features).indexOf('conditioner') > -1;
+        } else {
+          return point.offer;
+        }
+      };
+
+      // Функция фильтации
+      const getFiltration = (point) => {
+        onTypeFilter(point);
+        onPriceFilter(point);
+        onRoomsFilter(point);
+        onGuestsFilter(point);
+        onWifiFilter(point);
+        onDishwasherFilter(point);
+        onParkingFilter(point);
+        onWasherFilter(point);
+        onElevatorFilter(point);
+        onConditionerFilter(point);
+
+        return onTypeFilter(point) && onPriceFilter(point) && onRoomsFilter(point) &&  onGuestsFilter(point) && onWifiFilter(point) && onDishwasherFilter(point) && onParkingFilter(point) && onWasherFilter(point) &&  onElevatorFilter(point) && onConditionerFilter(point)
+      }
+
+      filteredServerData = filteredServerData.filter(getFiltration);
+
+      // Выводим маркеры
+      console.log(filteredServerData)
+      markersGroup.clearLayers();
+      addMarkers(filteredServerData, markersGroup);
+    });
+  }
+
+
+export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, changeAdressInputValue, addMarkersLayer, addMarkers, markersGroup, mapFilters, changeMarkersByFilters}
 
 
 
@@ -139,173 +307,14 @@ export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, chang
 
 
 
-  // // Добавляет маркеры
 
 
 
 
-  // let comparedTypeValue = 'any';
-  // let comparedPriceValue = 'any';
-  // let comparedRoomsValue = 'any';
-  // let comparedGuestsValue = 'any';
 
-  // mapFilters.addEventListener('change', () => {
-  //   let filteredServerData = serverData;
-
-  //   // Получаем данные для фильтра для типа жилья
-  //   housingTypeOptionsList.forEach((option) => {
-  //     if (option.selected) {
-  //       comparedTypeValue = option.value;
-  //     }
-  //   });
-
-  //   // Получаем данные для фильтра по стоимости аренды
-  //   housingPriceOptionsList.forEach((option) => {
-  //     if (option.selected) {
-  //       comparedPriceValue = option.value;
-  //     }
-  //   });
-
-  //   // Получаем данные для фильтра по количеству комнат
-  //   housingRoomsOptionsList.forEach((option) => {
-  //     if (option.selected) {
-  //       comparedRoomsValue = option.value;
-  //     }
-  //   });
-
-  //   // Получаем данные для фильтра по количеству гостей
-  //   housingGuestsOptionsList.forEach((option) => {
-  //     if (option.selected) {
-  //       comparedGuestsValue = option.value;
-  //     }
-  //   });
-
-  //   //Фильтр для типа жилья
-  //   const onTypeFilter = (point) => {
-  //     if (comparedTypeValue === 'any') {
-  //       return point.offer.type;
-  //     } else {
-  //       return point.offer.type === comparedTypeValue;
-  //     }
-  //   };
-
-  //   // Фильтр для стоимости жилья
-  //   const onPriceFilter = (point) => {
-  //     if (comparedPriceValue === 'any') {
-  //       return point.offer.price;
-  //     } else if (comparedPriceValue === 'low') {
-  //       return Number(point.offer.price) < 10000;
-  //     } else if (comparedPriceValue === 'middle') {
-  //       return Number(point.offer.price) >= 10000 && Number(point.offer.price) < 50000;
-  //     } else {
-  //       return Number(point.offer.price) >= 50000;
-  //     }
-  //   };
-
-  //   //Фильтр для количества комнат
-  //   const onRoomsFilter = (point) => {
-  //     if (comparedRoomsValue === 'any') {
-  //       return point.offer.rooms;
-  //     } else if (comparedRoomsValue === '1') {
-  //       return Number(point.offer.rooms) === 1;
-  //     } else if (comparedRoomsValue === '2') {
-  //       return Number(point.offer.rooms) === 2;
-  //     } else {
-  //       return Number(point.offer.rooms) === 3;
-  //     }
-  //   };
-
-  //   // Фильтр для количества гостей
-  //   const onGuestsFilter = (point) => {
-  //     if (comparedGuestsValue === 'any') {
-  //       return point.offer.guests;
-  //     } else if (comparedGuestsValue === '0') {
-  //       return Number(point.offer.guests) === 0;
-  //     } else if (comparedGuestsValue === '1') {
-  //       return Number(point.offer.guests) === 1;
-  //     } else {
-  //       return Number(point.offer.guests) === 2;
-  //     }
-  //   };
-
-  //   //Фильтр по удобству wifi
-  //   const onWifiFilter = (point) => {
-  //     if (wifiCheckbox.checked) {
-  //       return point.offer.features && (point.offer.features).indexOf('wifi') > -1;
-  //     } else {
-  //       return point.offer;
-  //     }
-  //   };
-
-  //   //Фильтр по удобству dishwaher
-  //   const onDishwasherFilter = (point) => {
-  //     if (dishwasherCheckbox.checked) {
-  //       return point.offer.features && (point.offer.features).indexOf('dishwasher') > -1;
-  //     } else {
-  //       return point.offer;
-  //     }
-  //   };
-
-  //   // Фильтр по удобству parking
-  //   const onParkingFilter = (point) => {
-  //     if (parkingCheckbox.checked) {
-  //       return point.offer.features && (point.offer.features).indexOf('parking') > -1;
-  //     } else {
-  //       return point.offer;
-  //     }
-  //   };
-
-  //   // Фильтр по удобстству washer
-  //   const onWasherFilter = (point) => {
-  //     if (washerCheckbox.checked) {
-  //       return point.offer.features && (point.offer.features).indexOf('washer') > -1;
-  //     } else {
-  //       return point.offer;
-  //     }
-  //   };
-
-  //   // Фильтр по удобстству elevator
-  //   const onElevatorFilter = (point) => {
-  //     if (elevatorCheckbox.checked) {
-  //       return point.offer.features && (point.offer.features).indexOf('elevator') > -1;
-  //     } else {
-  //       return point.offer;
-  //     }
-  //   };
-
-  //    // Фильтр по удобстству conditioner
-  //    const onConditionerFilter = (point) => {
-  //     if (conditionerCheckbox.checked) {
-  //       return point.offer.features && (point.offer.features).indexOf('conditioner') > -1;
-  //     } else {
-  //       return point.offer;
-  //     }
-  //   };
-
-  //   // Функция фильтации
-  //   const getFiltration = (point) => {
-  //     onTypeFilter(point);
-  //     onPriceFilter(point);
-  //     onRoomsFilter(point);
-  //     onGuestsFilter(point);
-  //     onWifiFilter(point);
-  //     onDishwasherFilter(point);
-  //     onParkingFilter(point);
-  //     onWasherFilter(point);
-  //     onElevatorFilter(point);
-  //     onConditionerFilter(point);
-
-  //     return onTypeFilter(point) && onPriceFilter(point) && onRoomsFilter(point) &&  onGuestsFilter(point) && onWifiFilter(point) && onDishwasherFilter(point) && onParkingFilter(point) && onWasherFilter(point) &&  onElevatorFilter(point) && onConditionerFilter(point)
-  //   }
 
   //   // Фильтрация
 
-  //   filteredServerData = filteredServerData.filter(getFiltration);
 
-  //   // Выводим маркеры
-  //   console.log(filteredServerData)
-  //   markerGroup.clearLayers();
-  //   addMarkers(filteredServerData);
-  // });
 
 
