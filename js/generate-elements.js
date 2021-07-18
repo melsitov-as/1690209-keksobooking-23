@@ -1,144 +1,115 @@
 
-const generateBaloon = () => {
+const generateBaloon = (point) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
-  const clonedCardTemplate = cardTemplate.cloneNode(true);
-  const offer = document.createDocumentFragment();
-  offer.appendChild(clonedCardTemplate);
-  console.log(offer)
-  console.log(cardTemplate)
+  const offer = cardTemplate.cloneNode(true);
+  const offerAvatar = offer.querySelector('.popup__avatar');
+  const offerTitle = offer.querySelector('.popup__title');
+  const offerAddress = offer.querySelector('.popup__text--address');
+  const offerPrice = offer.querySelector('.popup__text--price');
+  const offerType = offer.querySelector('.popup__type');
+  const offerCapacity = offer.querySelector('.popup__text--capacity');
+  const offerTime = offer.querySelector('.popup__text--time');
+  const offerFeatures = offer.querySelector('.popup__features');
+  const offerDescription = offer.querySelector('.popup__description');
+  const offerPhotos = offer.querySelector('.popup__photos');
+  const offerPhoto = offer.querySelector('.popup__photo');
+
+
+  let roomsCount;
+  let guestsCount;
+
+  // Аватор в балуне
+  if (point.author.avatar === "img/avatars/default.png") {
+    offerAvatar.style.display = "none";
+  } else {
+    offerAvatar.src = point.author.avatar;
+  }
+
+  // Заголовок балуна
+  offerTitle.textContent = point.offer.title;
+
+
+  //Адрес в балуне
+  offerAddress.textContent = point.offer.address;
+
+  // Цена в балуне
+  offerPrice.textContent = `${point.offer.price} ₽/ночь`;
+
+
+  // Тип жилья
+    switch(point.offer.type) {
+      case 'flat':
+        offerType.textContent = 'Квартира';
+        break;
+      case 'bungalow':
+        offerType.textContent = 'Бунгало';
+        break;
+      case 'house':
+        offerType.textContent = 'Дом';
+        break;
+      case 'palace':
+        offerType.textContent = 'Дворец';
+        break;
+      case 'hotel':
+        offerType.textContent = 'Отель'
+    }
+
+  // Количество комнат и гостей
+  if (point.offer.rooms % 10 === 0 || (point.offer.rooms % 10 >= 5 && point.offer.rooms <= 9)) {
+    roomsCount = 'комнат';
+  } else if (point.offer.rooms % 10 === 1) {
+    roomsCount = 'комната';
+  } else if (point.offer.rooms % 10 >= 2 && point.offer.rooms <= 4) {
+    roomsCount = 'комнаты'
+  }
+
+  if (point.offer.guests === '1') {
+    guestsCount = 'гостя';
+  } else {
+    guestsCount = 'гостей'
+  }
+
+  offerCapacity.textContent = `${point.offer.rooms} ${roomsCount} для ${point.offer.guests} ${guestsCount}`;
+
+
+  // Въезд - выезд
+  offerTime.textContent = `Заезд после ${point.offer.checkin}, выезд до ${point.offer.checkout}`
+
+
+  // Удобства
+  if (!point.offer.features) {
+    offerFeatures.style.display = 'none';
+  } else {
+    const modifiers = (point.offer.features).map((feature) => `popup__feature--${feature}`);
+    offerFeatures.querySelectorAll('.popup__feature').forEach((item) => {
+      const modifier = item.classList[1];
+      if (modifiers.includes(modifier)) {
+        item.remove();
+      }
+    });
+  }
+
+  // Описание
+  if (!point.offer.description) {
+    offerDescription.style.display = 'none';
+  } else {
+    offerDescription.textContent = point.offer.description;
+  }
+
+  //Фото жилья
+  if (!point.offer.photos) {
+    offerPhotos.style.display = 'none';
+  } else {
+    for (let ii = 0; ii < (point.offer.photos).length; ii++) {
+      const clonedOfferPhoto = offerPhoto.cloneNode(true);
+      clonedOfferPhoto.src = point.offer.photos[ii];
+      offerPhotos.appendChild(clonedOfferPhoto);
+    }
+    offerPhoto.style.display = 'none';
+  }
 
   return offer;
 }
 
 export {generateBaloon};
 
-
-
-// const cardTemplate = document.querySelector('#card').content;
-// const offerAvatar = cardTemplate.querySelector('.popup__avatar');
-// const offerTitle = cardTemplate.querySelector('.popup__title');
-// const offerAddress = cardTemplate.querySelector('.popup__text--address');
-// const offerPrice = cardTemplate.querySelector('.popup__text--price');
-// const offerLodgingType = cardTemplate.querySelector('.popup__type');
-// const offerRoomsGuests = cardTemplate.querySelector('.popup__text--capacity');
-// const checkinCheckout = cardTemplate.querySelector('.popup__text--time');
-// const offerFeatures = cardTemplate.querySelector('.popup__features');
-// const offerDescription = cardTemplate.querySelector('.popup__description');
-// const offerLodgingPhotos = cardTemplate.querySelector('.popup__photos');
-// const offerLodgingPhoto = cardTemplate.querySelector('.popup__photo');
-
-// // Сгенерировать балун
-// const generateBaloon = (point) => {
-
-//   const offer = document.createDocumentFragment();
-
-//   // Аватар
-//   const avatarAddress = point.author.avatar;
-//   offerAvatar.src = avatarAddress;
-//   const clonedOfferAvatar = offerAvatar.cloneNode(true);
-//   offer.appendChild(clonedOfferAvatar);
-
-//   // Заголовок балуна
-
-//   const clonedOfferTitle = offerTitle.cloneNode(true);
-//   clonedOfferTitle.textContent = point.offer.title;
-//   offer.appendChild(clonedOfferTitle);
-
-//   // Адрес в балуне
-
-//   const clonedOfferAddress = offerAddress.cloneNode(true);
-//   clonedOfferAddress.textContent = point.offer.address;
-//   offer.appendChild(clonedOfferAddress);
-
-//   // Цена в балуне
-
-//   const clonedOfferPrice = offerPrice.cloneNode(true);
-//   clonedOfferPrice.textContent = `${point.offer.price} ₽/ночь`;
-//   offer.appendChild(clonedOfferPrice);
-
-//   // Тип жилья
-
-//   const clonedOfferLodgingType = offerLodgingType.cloneNode(true);
-//   switch(point.offer.type) {
-//     case point.offer.type = 'flat':
-//       clonedOfferLodgingType.textContent = 'Квартира';
-//       break;
-//     case point.offer.type = 'bungalow':
-//       clonedOfferLodgingType.textContent = 'Бунгало';
-//       break;
-//     case point.offer.type = 'house':
-//       clonedOfferLodgingType.textContent = 'Дом';
-//       break;
-//     case point.offer.type = 'palace':
-//       clonedOfferLodgingType.textContent = 'Дворец';
-//       break;
-//     case point.offer.type = 'hotel':
-//       clonedOfferLodgingType.textContent = 'Отель';
-//       break;
-//   }
-//   offer.appendChild(clonedOfferLodgingType);
-
-//   // Количество комнат и гостей
-//   const numberOfRooms = point.offer.rooms;
-//   const numberOfGuests = point.offer.guests;
-//   const clonedOfferRoomsGuests = offerRoomsGuests.cloneNode(true);
-//   let roomsCount;
-//   if (numberOfRooms % 10 === 0 || (numberOfRooms % 10 >= 5 && numberOfRooms <= 9)) {
-//     roomsCount = 'комнат';
-//   } else if (numberOfRooms % 10 === 1) {
-//     roomsCount = 'комната';
-//   } else if (numberOfRooms % 10 >= 2 && numberOfRooms <= 4) {
-//     roomsCount = 'комнаты';
-//   }
-//   clonedOfferRoomsGuests.textContent = `${numberOfRooms} ${roomsCount} для ${numberOfGuests} гостей`;
-//   offer.appendChild(clonedOfferRoomsGuests);
-
-//   // Въезд -выезд
-
-//   const clonedCheckinCheckout = checkinCheckout.cloneNode(true);
-//   const checkin = point.offer.checkin;
-//   const checkout = point.offer.checkout;
-//   clonedCheckinCheckout.textContent = `Заезд после ${checkin}, выезд до ${checkout}`;
-//   offer.appendChild(clonedCheckinCheckout);
-
-//   // Удобства
-
-//   const clonedOfferFeatures = offerFeatures.cloneNode(true);
-//   const offerFeaturesList = point.offer.features;
-//   if (offerFeaturesList) {
-//     const modifiers = offerFeaturesList.map((feature) => `popup__feature--${feature}`);
-//     clonedOfferFeatures.querySelectorAll('.popup__feature').forEach((item) => {
-//       const modifier = item.classList[1];
-//       if (modifiers.includes(modifier)) {
-//         item.remove();
-//       }
-//     });
-//     offer.appendChild(clonedOfferFeatures);
-//   }
-
-//   // Описание
-
-//   const clonedOfferDescription = offerDescription.cloneNode(true);
-//   const offerDescriptionText = point.offer.description;
-//   clonedOfferDescription.textContent = offerDescriptionText;
-//   offer.appendChild(clonedOfferDescription);
-
-//   // Фото жилья
-//   const offerLodgingPhotosList = point.offer.photos;
-//   const clonedOfferLodgingPhotos = offerLodgingPhotos.cloneNode(true);
-//   if (offerLodgingPhotosList) {
-//     for (let ii = 0; ii < offerLodgingPhotosList.length; ii++) {
-//       const clonedOfferLodgingPhoto = offerLodgingPhoto.cloneNode(true);
-//       clonedOfferLodgingPhoto.src = offerLodgingPhotosList[ii];
-//       clonedOfferLodgingPhotos.appendChild(clonedOfferLodgingPhoto);
-//     }
-//     const clonedPhotosList = clonedOfferLodgingPhotos.querySelectorAll('.popup__photo');
-//     clonedOfferLodgingPhotos.removeChild(clonedPhotosList[0]);
-//     offer.appendChild(clonedOfferLodgingPhotos);
-//   }
-
-//   return offer;
-// };
-
-
-// export {generateBaloon};
