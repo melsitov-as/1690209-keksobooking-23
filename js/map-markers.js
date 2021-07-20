@@ -2,7 +2,6 @@
 import { adFormEnableActive, mapFiltersEnableActive } from './enable-active.js';
 import { generateBaloon } from './generate-elements.js';
 import { debounce } from './utils/debounce.js';
-import { serverData } from './server-interaction.js';
 
 const addressInput = document.querySelector('#address');
 const mapFilters = document.querySelector('.map__filters');
@@ -53,14 +52,16 @@ const loadMap = () => {
 }
 
 // Добавляет основной маркер
+let mainPinMarkerLayer;
 const addMainPinMarker = (mapCanvas) => {
+  mainPinMarkerLayer = L.layerGroup().addTo(mapCanvas)
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
     iconSize: [52, 52],
     iconAnchor: [26, 52],
   });
 
-    mainPinMarker = L.marker(
+  mainPinMarker = L.marker(
     {
       lat: MAIN_PIN_MARKER_DEFAULT_LAT,
       lng: MAIN_PIN_MARKER_DEFAULT_LNG,
@@ -71,9 +72,13 @@ const addMainPinMarker = (mapCanvas) => {
     },
   );
 
-  mainPinMarker.addTo(mapCanvas);
-  return mainPinMarker;
+  mainPinMarker.addTo(mainPinMarkerLayer);
+
+  return mainPinMarker, mainPinMarkerLayer
 }
+
+console.log(mainPinMarker, mainPinMarkerLayer)
+
 
 //Добавляет координаты в инпут с адресом
 
@@ -91,8 +96,8 @@ const changeAdressInputValue = (mainPinMarker) => {
 
 let markersGroup;
 
-const addMarkersLayer = (mapCanvas) => {
-  markersGroup = L.layerGroup().addTo(mapCanvas);
+const addMarkersLayer = (mainPinMarkerLayer) => {
+  markersGroup = L.layerGroup().addTo(mainPinMarkerLayer);
 
   return markersGroup;
 }
@@ -292,28 +297,9 @@ const addMarkers = (debounce((data, markersGroup) => {
   }
 
 
-export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, changeAdressInputValue, addMarkersLayer, addMarkers, markersGroup, mapFilters, changeMarkersByFilters}
+export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, mainPinMarkerLayer, changeAdressInputValue, addMarkersLayer, addMarkers, markersGroup, mapFilters, changeMarkersByFilters}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //   // Фильтрация
 
 
 

@@ -1,5 +1,6 @@
+import { mainPinMarker, mainPinMarkerLayer } from "./map-markers.js";
 
-const validationExecution = () => {
+
   const MIN_TITLE_LENGTH = 30;
   const MAX_TITLE_LENGTH = 100;
   let minPrice = 0;
@@ -50,6 +51,8 @@ const validationExecution = () => {
       titleInput.setCustomValidity('');
     }
   };
+
+
 
   titleInput.addEventListener('input', onTitleValidation);
 
@@ -114,6 +117,7 @@ const validationExecution = () => {
     return capacityValue;
   };
 
+
   capacitySelect.addEventListener('change', onChangeCapacityValue);
 
   const onCapacityValidationExecution = () => {
@@ -136,6 +140,8 @@ const validationExecution = () => {
   });
 
 
+
+
   // Валидация въезд - выезд
 
   const onCheckinChangeHandle = (evt) => {
@@ -156,15 +162,30 @@ const validationExecution = () => {
     }
   };
 
+
+
   checkin.addEventListener('change', onCheckinChangeHandle);
   checkout.addEventListener('change', onCheckoutChangeHandle);
 
   // Очищает форму
 
-  const onClearForm = () => {
+  const onClearForm = (mainPinMarker, mainPinMarkerLayer) => {
     titleInput.value = '';
+    mainPinMarkerLayer.clearLayers();
+    mainPinMarker = L.marker(
+      {
+        lat: MAIN_PIN_MARKER_DEFAULT_LAT,
+        lng: MAIN_PIN_MARKER_DEFAULT_LNG,
+      },
+      {
+        draggable: true,
+        icon: mainPinIcon,
+      },
+    );
+
+    mainPinMarker.addTo(mainPinMarkerLayer);
     addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
-    // addressInput.placeholder = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
+
     optionValueDefault.selected = true;
     priceInput.value = '';
     timeinOptionDefault.selected = true;
@@ -206,6 +227,8 @@ const validationExecution = () => {
 
     });
   };
+
+
 
   // Показывает попап об ошибке в отправке сообщения
 
@@ -267,13 +290,13 @@ const validationExecution = () => {
   setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup);
 
   // Навешивает на кнопку очистки очистку формы
-  const resetForm = () => {
+  const resetForm = (mainPinMarker, mainPinMarkerLayer) => {
     adResetButton.addEventListener('click', () => {
-      onClearForm();
+      onClearForm(mainPinMarker, mainPinMarkerLayer);
     });
   };
 
   resetForm();
-};
 
-export {validationExecution};
+
+export {onTitleValidation, titleInput, onMinPriceChangeHandle, typeSelect, onPriceValidation, priceInput, onChangeMaxNumberOfGuestValue, roomsNumberSelect, onChangeCapacityValue, capacitySelect, onCapacityValidationExecution, onCheckinChangeHandle, onCheckoutChangeHandle, checkin, checkout, onClearForm, onShowSuccessPopup, onShowErrorPopup, setUserFormSubmit, resetForm }
