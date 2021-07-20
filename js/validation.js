@@ -1,4 +1,4 @@
-import { mainPinMarker, mainPinMarkerLayer } from "./map-markers.js";
+import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from "./map-markers.js";
 
 
   const MIN_TITLE_LENGTH = 30;
@@ -40,6 +40,10 @@ import { mainPinMarker, mainPinMarkerLayer } from "./map-markers.js";
   const descriptionTextarea = document.querySelector('#description');
 
   // Валидация длины заголовка
+  const getValidation = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
+
+
+
   const onTitleValidation = () => {
     const valueLength = titleInput.value.length;
 
@@ -168,10 +172,16 @@ import { mainPinMarker, mainPinMarkerLayer } from "./map-markers.js";
   checkout.addEventListener('change', onCheckoutChangeHandle);
 
   // Очищает форму
-
-  const onClearForm = (mainPinMarker, mainPinMarkerLayer) => {
+  console.log('mainPinMarkerLayer', mainPinMarkerLayer);
+  const onClearForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
     titleInput.value = '';
     mainPinMarkerLayer.clearLayers();
+    const mainPinIcon = L.icon({
+      iconUrl: '../img/main-pin.svg',
+      iconSize: [52, 52],
+      iconAnchor: [26, 52],
+    });
+
     mainPinMarker = L.marker(
       {
         lat: MAIN_PIN_MARKER_DEFAULT_LAT,
@@ -184,6 +194,7 @@ import { mainPinMarker, mainPinMarkerLayer } from "./map-markers.js";
     );
 
     mainPinMarker.addTo(mainPinMarkerLayer);
+
     addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
 
     optionValueDefault.selected = true;
@@ -290,13 +301,15 @@ import { mainPinMarker, mainPinMarkerLayer } from "./map-markers.js";
   setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup);
 
   // Навешивает на кнопку очистки очистку формы
-  const resetForm = (mainPinMarker, mainPinMarkerLayer) => {
+  const resetForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
     adResetButton.addEventListener('click', () => {
-      onClearForm(mainPinMarker, mainPinMarkerLayer);
+      onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);
     });
   };
 
   resetForm();
 
+}
 
-export {onTitleValidation, titleInput, onMinPriceChangeHandle, typeSelect, onPriceValidation, priceInput, onChangeMaxNumberOfGuestValue, roomsNumberSelect, onChangeCapacityValue, capacitySelect, onCapacityValidationExecution, onCheckinChangeHandle, onCheckoutChangeHandle, checkin, checkout, onClearForm, onShowSuccessPopup, onShowErrorPopup, setUserFormSubmit, resetForm }
+
+export {getValidation}

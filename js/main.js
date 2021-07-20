@@ -1,6 +1,6 @@
 
-import { loadMap, mapCanvas, addMainPinMarker, addressInput, mainPinMarker, changeAdressInputValue, addMarkersLayer, markersGroup, addMarkers, changeMarkersByFilters } from './map-markers.js';
-import './validation.js'
+import { loadMap, mapCanvas, addMainPinMarker, addressInput, mainPinMarker, mainPinMarkerLayer, changeAdressInputValue, addMarkersLayer, markersGroup, addMarkers, changeMarkersByFilters, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from './map-markers.js';
+import {getValidation} from './validation.js'
 
 let serverData;
 const getServerData = () => {
@@ -13,6 +13,7 @@ const getServerData = () => {
     .then(() => addMarkersLayer(mapCanvas))
     .then(() => addMarkers(serverData, markersGroup))
     .then(() => changeMarkersByFilters(serverData, markersGroup))
+    .then(() => getValidation(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG));
   // .catch(() => showErrorPopup());
 
 };

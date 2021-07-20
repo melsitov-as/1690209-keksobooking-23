@@ -297,7 +297,7 @@ const addMarkers = (debounce((data, markersGroup) => {
   }
 
 
-export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, mainPinMarkerLayer, changeAdressInputValue, addMarkersLayer, addMarkers, markersGroup, mapFilters, changeMarkersByFilters}
+export {mapCanvas, loadMap, addMainPinMarker, addressInput, mainPinMarker, mainPinMarkerLayer, changeAdressInputValue, addMarkersLayer, addMarkers, markersGroup, mapFilters, changeMarkersByFilters, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG}
 
 
 
