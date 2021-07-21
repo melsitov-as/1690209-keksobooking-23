@@ -313,3 +313,5 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
 
 
 export {getValidation}
+
+// для коммита
