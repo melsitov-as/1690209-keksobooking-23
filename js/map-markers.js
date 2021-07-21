@@ -77,7 +77,7 @@ const addMainPinMarker = (mapCanvas) => {
   return mainPinMarker, mainPinMarkerLayer
 }
 
-console.log(mainPinMarker, mainPinMarkerLayer)
+console.log('mainPinMarker: ', mainPinMarker, 'mainPinMarkerLayer: ', mainPinMarkerLayer)
 
 
 //Добавляет координаты в инпут с адресом

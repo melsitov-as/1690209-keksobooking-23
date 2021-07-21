@@ -1,5 +1,4 @@
-import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from "./map-markers.js";
-
+import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from "./reset-form.js";
 
   const MIN_TITLE_LENGTH = 30;
   const MAX_TITLE_LENGTH = 100;
@@ -25,22 +24,12 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
   const successPopupTemplate = successPopup.content.querySelector('.success');
   const errorPopup = document.querySelector('#error');
   const errorPopupTemplate = errorPopup.content.querySelector('.error');
-  const adResetButton = document.querySelector('.ad-form__reset');
-  const addressInput = document.querySelector('#address');
-  const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
   const roomsNumberSelect = document.querySelector('#room_number');
   const capacitySelect = document.querySelector('#capacity');
-  const roomNumberOptionDefault = roomsNumberSelect.querySelector('option[value="1"]')
-  const capacityOptionDefault = capacitySelect.querySelector('option[value="3"]')
-  const timeinSelect = document.querySelector('#timein');
-  const timeinOptionDefault = timeinSelect.querySelector('option[value="12:00"]');
-  const timeoutSelect = document.querySelector('#timeout');
-  const timeoutOptionDefault = timeoutSelect.querySelector('option[value="12:00"]');
-  const featuresInputs = document.querySelectorAll('.features__checkbox');
-  const descriptionTextarea = document.querySelector('#description');
+
 
   // Валидация длины заголовка
-  const getValidation = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
+  const getValidation = () => {
 
 
 
@@ -58,8 +47,10 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
 
 
 
-  titleInput.addEventListener('input', onTitleValidation);
-
+  titleInput.addEventListener('input', () => {
+    onTitleValidation();
+    titleInput.reportValidity();
+  })
   // Валидация цены за ночь
   const onMinPriceChangeHandle = (evt) => {
     if (evt.target.value === 'bungalow') {
@@ -99,7 +90,9 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
     }
   };
 
-  priceInput.addEventListener('input', onPriceValidation);
+  priceInput.addEventListener('input', () => {
+    onPriceValidation()
+    priceInput.reportValidity();});
 
 
   //Валидация количества комнат и количества мест
@@ -171,44 +164,6 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
   checkin.addEventListener('change', onCheckinChangeHandle);
   checkout.addEventListener('change', onCheckoutChangeHandle);
 
-  // Очищает форму
-  console.log('mainPinMarkerLayer', mainPinMarkerLayer);
-  const onClearForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
-    titleInput.value = '';
-    mainPinMarkerLayer.clearLayers();
-    const mainPinIcon = L.icon({
-      iconUrl: '../img/main-pin.svg',
-      iconSize: [52, 52],
-      iconAnchor: [26, 52],
-    });
-
-    mainPinMarker = L.marker(
-      {
-        lat: MAIN_PIN_MARKER_DEFAULT_LAT,
-        lng: MAIN_PIN_MARKER_DEFAULT_LNG,
-      },
-      {
-        draggable: true,
-        icon: mainPinIcon,
-      },
-    );
-
-    mainPinMarker.addTo(mainPinMarkerLayer);
-
-    addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
-
-    optionValueDefault.selected = true;
-    priceInput.value = '';
-    timeinOptionDefault.selected = true;
-    timeoutOptionDefault.selected = true;
-    roomNumberOptionDefault.selected = true;
-    capacityOptionDefault.selected = true;
-    for (const featureInput of featuresInputs) {
-      featureInput.checked = false;
-    }
-
-    descriptionTextarea.value = '';
-  };
 
   // Показыват попап об успешной отправке сообщения
 
@@ -239,8 +194,6 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
     });
   };
 
-
-
   // Показывает попап об ошибке в отправке сообщения
 
   const onShowErrorPopup = () => {
@@ -269,7 +222,7 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
 
   // Событие при отправке формы
 
-  const setUserFormSubmit = (onSuccess, onError) => {
+  const setUserFormSubmit = (onSuccess, onError, resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
     adForm.addEventListener('submit', (event) => {
         event.preventDefault();
         onTitleValidation;
@@ -288,26 +241,18 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
       ).then((response) => {
         if (response.ok) {
           onSuccess();
+          resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);
         } else {
           onError();
         }
       })
-        .catch(() => {
-          console.log('Ошибка в отправке')
-      });
+      //   .catch(() => {
+      //     console.log('Ошибка в отправке');
+      // });
     });
   };
 
   setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup);
-
-  // Навешивает на кнопку очистки очистку формы
-  const resetForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
-    adResetButton.addEventListener('click', () => {
-      onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);
-    });
-  };
-
-  resetForm();
 
 }
 
