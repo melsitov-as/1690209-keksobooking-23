@@ -1,4 +1,4 @@
-import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from "./reset-form.js";
+import { onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from "./reset-form.js";
 
   const MIN_TITLE_LENGTH = 30;
   const MAX_TITLE_LENGTH = 100;
@@ -29,7 +29,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
 
 
   // Валидация длины заголовка
-  const getValidation = () => {
+  const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
 
 
 
@@ -167,7 +167,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
 
   // Показыват попап об успешной отправке сообщения
 
-  const onShowSuccessPopup = (resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
+  const onShowSuccessPopup = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
     clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
@@ -180,7 +180,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
       if (body.querySelector('.cloned-success-popup')) {
         if (evt.key === 'Escape' || evt.key === 'esc') {
           body.removeChild(clonedSuccessPopupTemplate);
-          resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);;
+          onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);;
         }
       }
     });

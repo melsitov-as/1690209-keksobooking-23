@@ -1,6 +1,6 @@
 
 import { loadMap, mapCanvas, addMainPinMarker, addressInput, mainPinMarker, mainPinMarkerLayer, changeAdressInputValue, addMarkersLayer, markersGroup, addMarkers, changeMarkersByFilters, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from './map-markers.js';
-import { resetForm } from './reset-form.js';
+import { onClearForm, resetForm } from './reset-form.js';
 import {getValidation} from './validation.js'
 
 let serverData;
@@ -14,11 +14,12 @@ const getServerData = () => {
     .then(() => addMarkersLayer(mapCanvas))
     .then(() => addMarkers(serverData, markersGroup))
     .then(() => changeMarkersByFilters(serverData, markersGroup))
+    .then(() => getValidation(onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG))
+    .then(() => resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG))
   // .catch(() => showErrorPopup());
 
 };
 
 getServerData();
-getValidation()
-resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG)
+
 

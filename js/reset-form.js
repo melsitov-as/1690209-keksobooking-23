@@ -1,7 +1,7 @@
 import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG } from "./map-markers.js";
 
  // Очищает форму
- const adResetButton = document.querySelector('.ad-form__reset');
+  const adResetButton = document.querySelector('.ad-form__reset');
   const addressInput = document.querySelector('#address');
   const optionValueDefault = document.querySelector('#type').querySelector('option[value="flat"]');
   const roomsNumberSelect = document.querySelector('#room_number');
@@ -42,7 +42,7 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
 
    mainPinMarker.addTo(mainPinMarkerLayer);
 
-   addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`;
+   addressInput.value = `${MAIN_PIN_MARKER_DEFAULT_LAT}, ${MAIN_PIN_MARKER_DEFAULT_LNG}`;
 
    optionValueDefault.selected = true;
    priceInput.value = '';
@@ -59,6 +59,8 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
    return mainPinMarker, mainPinMarkerLayer
  };
 
+
+
  // Навешивает на кнопку очистки очистку формы
  const resetForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
   adResetButton.addEventListener('click', () => {
@@ -66,4 +68,4 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
   });
 };
 
-export {resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG}
+export {resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onClearForm}
