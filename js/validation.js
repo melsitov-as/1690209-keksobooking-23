@@ -167,7 +167,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
 
   // Показыват попап об успешной отправке сообщения
 
-  const onShowSuccessPopup = () => {
+  const onShowSuccessPopup = (resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
     clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
@@ -180,7 +180,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
       if (body.querySelector('.cloned-success-popup')) {
         if (evt.key === 'Escape' || evt.key === 'esc') {
           body.removeChild(clonedSuccessPopupTemplate);
-          onClearForm();
+          resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);;
         }
       }
     });
@@ -188,7 +188,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
     document.addEventListener('click', () => {
       if (body.querySelector('.cloned-success-popup')) {
         body.removeChild(clonedSuccessPopupTemplate);
-        onClearForm();
+        resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);
       }
 
     });
@@ -222,7 +222,7 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
 
   // Событие при отправке формы
 
-  const setUserFormSubmit = (onSuccess, onError, resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG) => {
+  const setUserFormSubmit = (onSuccess, onError) => {
     adForm.addEventListener('submit', (event) => {
         event.preventDefault();
         onTitleValidation;
@@ -241,7 +241,6 @@ import { resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_L
       ).then((response) => {
         if (response.ok) {
           onSuccess();
-          resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG);
         } else {
           onError();
         }
