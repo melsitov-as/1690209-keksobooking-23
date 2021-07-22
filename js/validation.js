@@ -173,24 +173,28 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     clonedSuccessPopupTemplate.style.transform = 'translate(-50%, -50%)';
     body.appendChild(clonedSuccessPopupTemplate);
 
-    document.addEventListener('keydown', (evt) => {
-      if (body.querySelector('.cloned-success-popup')) {
+    if (body.querySelector('.cloned-success-popup')) {
+      document.addEventListener('keydown', (evt) => {
         if (evt.key === 'Escape' || evt.key === 'esc') {
-          body.removeChild(clonedSuccessPopupTemplate);
           onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
+            body.removeChild(clonedSuccessPopupTemplate);
+        } else {
+          console.log('Ошибка')
+        }
+      })
+    }
+
+    document.addEventListener('click', (evt) => {
+      if (evt) {
+        if (body.querySelector('.cloned-success-popup')) {
+          onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
+          body.removeChild(clonedSuccessPopupTemplate);
+        } else {
+          console.log('Ошибка')
         }
       }
-    });
-
-    document.addEventListener('click', () => {
-      if (body.querySelector('.cloned-success-popup')) {
-        body.removeChild(clonedSuccessPopupTemplate);
-        onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
-      }
-
-    });
-  };
-
+    })
+  }
   // Показывает попап об ошибке в отправке сообщения
 
   const onShowErrorPopup = () => {
@@ -243,12 +247,12 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
         }
       })
         .catch(() => {
-          onShowErrorPopup();
+          console.log('Ошибка');
       });
     });
   };
 
-  setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup);
+  setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup, onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
 
 }
 
