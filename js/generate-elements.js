@@ -1,4 +1,3 @@
-
 const generateBaloon = (point) => {
   const cardTemplate = document.querySelector('#card').content.querySelector('.popup');
   const offer = cardTemplate.cloneNode(true);
@@ -19,8 +18,8 @@ const generateBaloon = (point) => {
   let guestsCount;
 
   // Аватор в балуне
-  if (point.author.avatar === "img/avatars/default.png") {
-    offerAvatar.style.display = "none";
+  if (point.author.avatar === 'img/avatars/default.png') {
+    offerAvatar.style.display = 'none';
   } else {
     offerAvatar.src = point.author.avatar;
   }
@@ -37,22 +36,23 @@ const generateBaloon = (point) => {
 
 
   // Тип жилья
-    switch(point.offer.type) {
-      case 'flat':
-        offerType.textContent = 'Квартира';
-        break;
-      case 'bungalow':
-        offerType.textContent = 'Бунгало';
-        break;
-      case 'house':
-        offerType.textContent = 'Дом';
-        break;
-      case 'palace':
-        offerType.textContent = 'Дворец';
-        break;
-      case 'hotel':
-        offerType.textContent = 'Отель'
-    }
+  switch(point.offer.type) {
+    case 'flat':
+      offerType.textContent = 'Квартира';
+      break;
+    case 'bungalow':
+      offerType.textContent = 'Бунгало';
+      break;
+    case 'house':
+      offerType.textContent = 'Дом';
+      break;
+    case 'palace':
+      offerType.textContent = 'Дворец';
+      break;
+    case 'hotel':
+      offerType.textContent = 'Отель';
+      break;
+  }
 
   // Количество комнат и гостей
   if (point.offer.rooms % 10 === 0 || (point.offer.rooms % 10 >= 5 && point.offer.rooms <= 9)) {
@@ -60,20 +60,20 @@ const generateBaloon = (point) => {
   } else if (point.offer.rooms % 10 === 1) {
     roomsCount = 'комната';
   } else if (point.offer.rooms % 10 >= 2 && point.offer.rooms <= 4) {
-    roomsCount = 'комнаты'
+    roomsCount = 'комнаты';
   }
 
   if (point.offer.guests === '1') {
     guestsCount = 'гостя';
   } else {
-    guestsCount = 'гостей'
+    guestsCount = 'гостей';
   }
 
   offerCapacity.textContent = `${point.offer.rooms} ${roomsCount} для ${point.offer.guests} ${guestsCount}`;
 
 
   // Въезд - выезд
-  offerTime.textContent = `Заезд после ${point.offer.checkin}, выезд до ${point.offer.checkout}`
+  offerTime.textContent = `Заезд после ${point.offer.checkin}, выезд до ${point.offer.checkout}`;
 
 
   // Удобства
@@ -109,7 +109,7 @@ const generateBaloon = (point) => {
   }
 
   return offer;
-}
+};
 
 export {generateBaloon};
 
