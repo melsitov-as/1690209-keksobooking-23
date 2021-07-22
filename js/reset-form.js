@@ -42,7 +42,7 @@ import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PI
 
    mainPinMarker.addTo(mainPinMarkerLayer);
 
-   addressInput.value = `${MAIN_PIN_MARKER_DEFAULT_LAT}, ${MAIN_PIN_MARKER_DEFAULT_LNG}`;
+   addressInput.setAttribute = ('value', `${MAIN_PIN_MARKER_DEFAULT_LAT}, ${MAIN_PIN_MARKER_DEFAULT_LNG}`);
 
    optionValueDefault.selected = true;
    priceInput.value = '';
