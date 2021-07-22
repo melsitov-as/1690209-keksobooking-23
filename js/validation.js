@@ -173,33 +173,29 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     clonedSuccessPopupTemplate.style.transform = 'translate(-50%, -50%)';
     body.appendChild(clonedSuccessPopupTemplate);
 
-    if (body.querySelector('.cloned-success-popup')) {
+
       document.addEventListener('keydown', (evt) => {
         if (evt.key === 'Escape' || evt.key === 'esc') {
-          onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
+          if (body.querySelector('.cloned-success-popup')) {
+            onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
             body.removeChild(clonedSuccessPopupTemplate);
-        } else {
-          console.log('Ошибка')
+          } else ;
         }
       })
-    }
 
-    document.addEventListener('click', (evt) => {
-      if (evt) {
+      document.addEventListener('click', () => {
         if (body.querySelector('.cloned-success-popup')) {
           onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
           body.removeChild(clonedSuccessPopupTemplate);
-        } else {
-          console.log('Ошибка')
-        }
-      }
-    })
+        } else ;
+      })
+
   }
   // Показывает попап об ошибке в отправке сообщения
 
   const onShowErrorPopup = () => {
     const clonedErrorPopupTemplate = errorPopupTemplate.cloneNode(true);
-    clonedErrorPopupTemplate.classList.add('.cloned-error-popup');
+    clonedErrorPopupTemplate.classList.add('cloned-error-popup');
     clonedErrorPopupTemplate.style.position = 'absolute';
     clonedErrorPopupTemplate.style.top = '50%';
     clonedErrorPopupTemplate.style.left = '50%';
@@ -207,12 +203,12 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     body.appendChild(clonedErrorPopupTemplate);
 
     document.addEventListener('keydown', (evt) => {
-      if (body.querySelector('.cloned-error-template')) {
-        if (evt.key === 'Escape' || evt.key === 'esc') {
+      if (evt.key === 'Escape' || evt.key === 'esc') {
+        if (body.querySelector('.cloned-error-popup')) {
           body.removeChild(clonedErrorPopupTemplate);
         }
       }
-    });
+    })
 
     const errorButton = clonedErrorPopupTemplate.querySelector('.error__button');
     errorButton.addEventListener('click', () => {
@@ -242,12 +238,13 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
       ).then((response) => {
         if (response.ok) {
           onShowSuccessPopup(onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
+          console.log('Отправил')
         } else {
           onShowErrorPopup();
         }
       })
-        .catch(() => {
-          console.log('Ошибка');
+      .catch(() => {
+        console.log('Ошибка');
       });
     });
   };
