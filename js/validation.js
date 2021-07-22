@@ -219,7 +219,7 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
 
   // Событие при отправке формы
 
-  const setUserFormSubmit = (onSuccess, onError) => {
+  const setUserFormSubmit = (onShowSuccessPopup, onShowErrorPopup, onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue) => {
     adForm.addEventListener('submit', (event) => {
         event.preventDefault();
         onTitleValidation;
@@ -237,13 +237,13 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
         },
       ).then((response) => {
         if (response.ok) {
-          onSuccess();
+          onShowSuccessPopup(onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
         } else {
-          onError();
+          onShowErrorPopup();
         }
       })
         .catch(() => {
-          onError();
+          onShowErrorPopup();
       });
     });
   };

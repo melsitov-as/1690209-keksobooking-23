@@ -14,12 +14,11 @@ const getServerData = () => {
     .then(() => addMarkersLayer(mapCanvas))
     .then(() => addMarkers(serverData, markersGroup))
     .then(() => changeMarkersByFilters(serverData, markersGroup))
-    .then(() => getValidation(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue))
-    .then(() => resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue));
   // .catch(() => showErrorPopup());
-
 };
 
 getServerData();
+resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue)
+getValidation(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue)
 
 
