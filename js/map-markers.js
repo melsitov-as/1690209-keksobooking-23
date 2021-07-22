@@ -50,8 +50,8 @@ const loadMap = () => {
 
 // Добавляет основной маркер
 let mainPinMarkerLayer;
-const addMainPinMarker = (mapCanvas) => {
-  mainPinMarkerLayer = L.layerGroup().addTo(mapCanvas);
+const addMainPinMarker = (mapData) => {
+  mainPinMarkerLayer = L.layerGroup().addTo(mapData);
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
     iconSize: [52, 52],
@@ -81,8 +81,8 @@ addressInput.value = `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7
 
 // Меняет координаты инпута с адресом по смене положения маркера
 
-const onChangeAdressInputValue = (mainPinMarker) => {
-  mainPinMarker.on('moveend', (evt) => {
+const onChangeAdressInputValue = (mainPinMarkerData) => {
+  mainPinMarkerData.on('moveend', (evt) => {
     const mainPinMarkerAddress = evt.target.getLatLng();
     addressInput.value = `${parseFloat((mainPinMarkerAddress.lat).toFixed(5))}, ${parseFloat((mainPinMarkerAddress.lng).toFixed(5))}`;
   });
@@ -90,8 +90,8 @@ const onChangeAdressInputValue = (mainPinMarker) => {
 
 let markersGroup;
 
-const addMarkersLayer = (mainPinMarkerLayer) => {
-  markersGroup = L.layerGroup().addTo(mainPinMarkerLayer);
+const addMarkersLayer = (mainPinMarkerLayerData) => {
+  markersGroup = L.layerGroup().addTo(mainPinMarkerLayerData);
 
   return markersGroup;
 };
@@ -99,7 +99,7 @@ const addMarkersLayer = (mainPinMarkerLayer) => {
 
 // Добавляет маркеры
 
-const addMarkers = (debounce((data, markersGroup) => {
+const addMarkers = (debounce((data, markersGroupData) => {
   mapFiltersEnableActive();
   (data.slice(0, 10)).forEach((point) => {
     const markerIcon = L.icon({
@@ -119,7 +119,7 @@ const addMarkers = (debounce((data, markersGroup) => {
     );
 
     marker
-      .addTo(markersGroup)
+      .addTo(markersGroupData)
       .bindPopup(generateBaloon(point));
   });
 }, RERENDER_DELAY ));
@@ -131,7 +131,7 @@ let comparedPriceValue = 'any';
 let comparedRoomsValue = 'any';
 let comparedGuestsValue = 'any';
 
-const changeMarkersByFilters = (serverData, markersGroup) => {
+const changeMarkersByFilters = (serverData, markersGroupData) => {
   mapFilters.addEventListener('change', () => {
     let filteredServerData = serverData;
 
@@ -284,7 +284,7 @@ const changeMarkersByFilters = (serverData, markersGroup) => {
     filteredServerData = filteredServerData.filter(getFiltration);
 
     // Выводим маркеры
-    markersGroup.clearLayers();
+    markersGroupData.clearLayers();
     addMarkers(filteredServerData, markersGroup);
   });
 };

@@ -1,5 +1,3 @@
-export {resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onClearForm} from './reset-form.js'
-
 const MIN_TITLE_LENGTH = 30;
 const MAX_TITLE_LENGTH = 100;
 let minPrice = 0;
@@ -43,11 +41,10 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
   };
 
 
-
   titleInput.addEventListener('input', () => {
     onTitleValidation();
     titleInput.reportValidity();
-  })
+  });
   // Валидация цены за ночь
   const onMinPriceChangeHandle = (evt) => {
     if (evt.target.value === 'bungalow') {
@@ -88,15 +85,11 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
   };
 
   priceInput.addEventListener('input', () => {
-    onPriceValidation()
+    onPriceValidation();
     priceInput.reportValidity();});
 
 
   //Валидация количества комнат и количества мест
-
-
-
-
   const onChangeMaxNumberOfGuestValue = (evt) => {
     roomsNumber = Number(evt.target.value);
     // console.log(roomsNumber);
@@ -117,11 +110,10 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
   const onCapacityValidationExecution = () => {
     if (roomsNumber === 100 && capacityValue !== 0) {
       capacitySelect.setCustomValidity('Помещения, в которых 100 комнат не предназначены для размещения гостей');
-      console.log('Клик');
     } else if (roomsNumber < 100 && capacityValue === 0) {
-      capacitySelect.setCustomValidity('В помещениях, в которых меньше 100 комнат обязательно надо указывать количество мест')
+      capacitySelect.setCustomValidity('В помещениях, в которых меньше 100 комнат обязательно надо указывать количество мест');
     } else if (roomsNumber < 100 && capacityValue > roomsNumber) {
-      capacitySelect.setCustomValidity('Количество мест не должно превышать количество комнат')
+      capacitySelect.setCustomValidity('Количество мест не должно превышать количество комнат');
     } else {
       capacitySelect.setCustomValidity('');
     }
@@ -129,12 +121,9 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
   };
 
   capacitySelect.addEventListener('change', (evt) => {
-    onChangeCapacityValue(evt),
-    onCapacityValidationExecution()
+    onChangeCapacityValue(evt);
+    onCapacityValidationExecution();
   });
-
-
-
 
   // Валидация въезд - выезд
 
@@ -156,15 +145,13 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     }
   };
 
-
-
   checkin.addEventListener('change', onCheckinChangeHandle);
   checkout.addEventListener('change', onCheckoutChangeHandle);
 
 
   // Показыват попап об успешной отправке сообщения
 
-  const onShowSuccessPopup = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue) => {
+  const onShowSuccessPopup = (onClearFormData, mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData) => {
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
     clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
@@ -174,25 +161,24 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     body.appendChild(clonedSuccessPopupTemplate);
 
 
-      document.addEventListener('keydown', (evt) => {
-        if (evt.key === 'Escape' || evt.key === 'esc') {
-          if (body.querySelector('.cloned-success-popup')) {
-            onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
-            body.removeChild(clonedSuccessPopupTemplate);
-          } else ;
-        }
-      })
-
-      document.addEventListener('click', () => {
-        if (body.querySelector('.cloned-success-popup')) {
-          onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Escape' || evt.key === 'esc') {
+        if (document.body.contains(clonedSuccessPopupTemplate)) {
+          onClearFormData(mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
           body.removeChild(clonedSuccessPopupTemplate);
-        } else ;
-      })
+        }
+      }
+    });
 
-  }
+    document.addEventListener('click', () => {
+      if (document.body.contains(clonedSuccessPopupTemplate)) {
+        onClearFormData(mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
+        body.removeChild(clonedSuccessPopupTemplate);
+      }
+    });
+  };
+
   // Показывает попап об ошибке в отправке сообщения
-
   const onShowErrorPopup = () => {
     const clonedErrorPopupTemplate = errorPopupTemplate.cloneNode(true);
     clonedErrorPopupTemplate.classList.add('cloned-error-popup');
@@ -204,11 +190,11 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
 
     document.addEventListener('keydown', (evt) => {
       if (evt.key === 'Escape' || evt.key === 'esc') {
-        if (body.querySelector('.cloned-error-popup')) {
+        if (document.body.contains(clonedErrorPopupTemplate)) {
           body.removeChild(clonedErrorPopupTemplate);
         }
       }
-    })
+    });
 
     const errorButton = clonedErrorPopupTemplate.querySelector('.error__button');
     errorButton.addEventListener('click', () => {
@@ -219,12 +205,12 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
 
   // Событие при отправке формы
 
-  const setUserFormSubmit = (onShowSuccessPopup, onShowErrorPopup, onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue) => {
+  const setUserFormSubmit = (onShowSuccessPopupData, onShowErrorPopupData, onClearFormData, mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData) => {
     adForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        onTitleValidation;
-        onPriceValidation;
-        onCapacityValidationExecution();
+      event.preventDefault();
+      onTitleValidation;
+      onPriceValidation;
+      onCapacityValidationExecution();
 
 
       const formData = new FormData(event.target);
@@ -237,23 +223,19 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
         },
       ).then((response) => {
         if (response.ok) {
-          onShowSuccessPopup(onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
-          console.log('Отправил')
+          onShowSuccessPopupData(onClearFormData, mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
         } else {
-          onShowErrorPopup();
+          onShowErrorPopupData();
         }
       })
-      .catch(() => {
-        console.log('Ошибка');
-      });
+        .catch(() => {
+          onShowErrorPopupData();
+        });
     });
   };
 
   setUserFormSubmit(onShowSuccessPopup, onShowErrorPopup, onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
 
-}
+};
 
-
-export {getValidation}
-
-// для коммита
+export {getValidation};

@@ -15,15 +15,9 @@ const getServerData = () => {
     .then(() => addMarkers(serverData, markersGroup))
     .then(() => changeMarkersByFilters(serverData, markersGroup))
     .then(() => resetForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue))
-    .then(() => getValidation(onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue))
+    .then(() => getValidation(onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue));
 
   // .catch(() => showErrorPopup());
 };
 
-getServerData()
-
-
-
-
-
-
+getServerData();

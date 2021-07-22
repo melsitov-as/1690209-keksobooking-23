@@ -1,4 +1,4 @@
-import { mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG} from './map-markers.js';
+import { mainPinMarker, mainPinMarkerLayer} from './map-markers.js';
 
 // Очищает форму
 const adResetButton = document.querySelector('.ad-form__reset');
@@ -17,19 +17,19 @@ const descriptionTextarea = document.querySelector('#description');
 const titleInput = document.querySelector('#title');
 const priceInput = document.querySelector('#price');
 
-const onClearForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue) => {
+const onClearForm = (mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData) => {
   titleInput.value = '';
-  mainPinMarkerLayer.clearLayers();
+  mainPinMarkerLayerData.clearLayers();
   const mainPinIcon = L.icon({
     iconUrl: '../img/main-pin.svg',
     iconSize: [52, 52],
     iconAnchor: [26, 52],
   });
 
-  mainPinMarker = L.marker(
+  mainPinMarkerData = L.marker(
     {
-      lat: MAIN_PIN_MARKER_DEFAULT_LAT,
-      lng: MAIN_PIN_MARKER_DEFAULT_LNG,
+      lat: MAIN_PIN_MARKER_DEFAULT_LAT_DATA,
+      lng: MAIN_PIN_MARKER_DEFAULT_LNG_DATA,
     },
     {
       draggable: true,
@@ -37,11 +37,11 @@ const onClearForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_
     },
   );
 
-  mainPinMarker.addTo(mainPinMarkerLayer);
+  mainPinMarkerData.addTo(mainPinMarkerLayer);
 
   addressInput.setAttribute('value', `${parseFloat((35.556161).toFixed(5))}, ${parseFloat((139.7580223).toFixed(5))}`);
 
-  onChangeAdressInputValue(mainPinMarker);
+  onChangeAdressInputValueData(mainPinMarkerData);
 
   optionValueDefault.selected = true;
   priceInput.value = '';
@@ -59,10 +59,10 @@ const onClearForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_
 };
 
 // Навешивает на кнопку очистки очистку формы
-const resetForm = (mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue) => {
+const resetForm = (mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData) => {
   adResetButton.addEventListener('click', () => {
-    onClearForm(mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onChangeAdressInputValue);
+    onClearForm(mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
   });
 };
 
-export {resetForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_MARKER_DEFAULT_LAT, MAIN_PIN_MARKER_DEFAULT_LNG, onClearForm};
+export {resetForm, onClearForm};
