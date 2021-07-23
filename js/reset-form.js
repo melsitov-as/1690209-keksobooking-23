@@ -49,9 +49,7 @@ const onClearForm = (mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_
   timeoutOptionDefault.selected = true;
   roomNumberOptionDefault.selected = true;
   capacityOptionDefault.selected = true;
-  for (const featureInput of featuresInputs) {
-    featureInput.checked = false;
-  }
+  featuresInputs.forEach(featureInput => featureInput.checked = false)
 
   descriptionTextarea.value = '';
 

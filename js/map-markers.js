@@ -3,6 +3,11 @@ import { adFormEnableActive, mapFiltersEnableActive } from './enable-active.js';
 import { generateBaloon } from './generate-elements.js';
 import { debounce } from './utils/debounce.js';
 
+const RERENDER_DELAY = 500;
+const MAIN_PIN_MARKER_DEFAULT_LAT = 35.556161;
+const MAIN_PIN_MARKER_DEFAULT_LNG = 139.7580223;
+
+
 const addressInput = document.querySelector('#address');
 const mapFilters = document.querySelector('.map__filters');
 const housingType = mapFilters.querySelector('#housing-type');
@@ -20,10 +25,6 @@ const parkingCheckbox = housingFeatures.querySelector('#filter-parking');
 const washerCheckbox = housingFeatures.querySelector('#filter-washer');
 const elevatorCheckbox = housingFeatures.querySelector('#filter-elevator');
 const conditionerCheckbox = housingFeatures.querySelector('#filter-conditioner');
-
-const RERENDER_DELAY = 500;
-const MAIN_PIN_MARKER_DEFAULT_LAT = 35.556161;
-const MAIN_PIN_MARKER_DEFAULT_LNG = 139.7580223;
 
 let mapCanvas;
 let mainPinMarker;
