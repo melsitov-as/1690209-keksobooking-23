@@ -151,7 +151,7 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
 
   // Показыват попап об успешной отправке сообщения
 
-  const onShowSuccessPopup = (onClearFormData, mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData) => {
+  const onShowSuccessPopup = () => {
     const clonedSuccessPopupTemplate = successPopupTemplate.cloneNode(true);
     clonedSuccessPopupTemplate.classList.add('cloned-success-popup');
     clonedSuccessPopupTemplate.style.position = 'absolute';
@@ -164,7 +164,6 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     document.addEventListener('keydown', (evt) => {
       if (evt.key === 'Escape' || evt.key === 'esc') {
         if (document.body.contains(clonedSuccessPopupTemplate)) {
-          onClearFormData(mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
           body.removeChild(clonedSuccessPopupTemplate);
         }
       }
@@ -172,7 +171,6 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
 
     document.addEventListener('click', () => {
       if (document.body.contains(clonedSuccessPopupTemplate)) {
-        onClearFormData(mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
         body.removeChild(clonedSuccessPopupTemplate);
       }
     });
@@ -223,6 +221,7 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
         },
       ).then((response) => {
         if (response.ok) {
+          onClearFormData(mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
           onShowSuccessPopupData(onClearFormData, mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_DEFAULT_LAT_DATA, MAIN_PIN_MARKER_DEFAULT_LNG_DATA, onChangeAdressInputValueData);
         } else {
           onShowErrorPopupData();
