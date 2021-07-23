@@ -101,11 +101,7 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     return capacityValue;
   };
 
-
-
   capacitySelect.addEventListener('change', onChangeCapacityValue);
-
-
 
   const onCapacityValidationExecution = () => {
     if (roomsNumber === 100 && capacityValue !== 0) {

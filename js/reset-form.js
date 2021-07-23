@@ -7,7 +7,7 @@ const optionValueDefault = document.querySelector('#type').querySelector('option
 const roomsNumberSelect = document.querySelector('#room_number');
 const capacitySelect = document.querySelector('#capacity');
 const roomNumberOptionDefault = roomsNumberSelect.querySelector('option[value="1"]');
-const capacityOptionDefault = capacitySelect.querySelector('option[value="3"]');
+const capacityOptionDefault = capacitySelect.querySelector('option[value="1"]');
 const timeinSelect = document.querySelector('#timein');
 const timeinOptionDefault = timeinSelect.querySelector('option[value="12:00"]');
 const timeoutSelect = document.querySelector('#timeout');
@@ -49,7 +49,9 @@ const onClearForm = (mainPinMarkerData, mainPinMarkerLayerData, MAIN_PIN_MARKER_
   timeoutOptionDefault.selected = true;
   roomNumberOptionDefault.selected = true;
   capacityOptionDefault.selected = true;
-  featuresInputs.forEach(featureInput => featureInput.checked = false)
+  featuresInputs.forEach((featureInput) => {
+    featureInput.checked = false;
+  });
 
   descriptionTextarea.value = '';
 
