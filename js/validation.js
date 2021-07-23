@@ -3,7 +3,7 @@ const MAX_TITLE_LENGTH = 100;
 const MAX_PRICE = 1000000;
 let minPrice = 0;
 let roomsNumber = 1;
-let capacityValue = 3;
+let capacityValue = 1;
 let checkinTime = '12:00';
 let checkoutTime = '12:00';
 
@@ -90,22 +90,22 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
 
 
   //Валидация количества комнат и количества мест
-  const onChangeMaxNumberOfGuestValue = (evt) => {
+  const onChangeMaxNumberOfGuestsValue = (evt) => {
     roomsNumber = Number(evt.target.value);
-    // console.log(roomsNumber);
     return roomsNumber;
   };
 
-  roomsNumberSelect.addEventListener('change', onChangeMaxNumberOfGuestValue );
 
   const onChangeCapacityValue = (evt) => {
     capacityValue = Number(evt.target.value);
-    // console.log(capacityValue);
     return capacityValue;
   };
 
 
+
   capacitySelect.addEventListener('change', onChangeCapacityValue);
+
+
 
   const onCapacityValidationExecution = () => {
     if (roomsNumber === 100 && capacityValue !== 0) {
@@ -119,6 +119,11 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
     }
     capacitySelect.reportValidity();
   };
+
+  roomsNumberSelect.addEventListener('change', (evt) => {
+    onChangeMaxNumberOfGuestsValue(evt);
+    onCapacityValidationExecution();
+  });
 
   capacitySelect.addEventListener('change', (evt) => {
     onChangeCapacityValue(evt);
@@ -208,7 +213,7 @@ const getValidation = (onClearForm, mainPinMarker, mainPinMarkerLayer, MAIN_PIN_
       event.preventDefault();
       onTitleValidation;
       onPriceValidation;
-      onCapacityValidationExecution();
+      onCapacityValidationExecution;
 
 
       const formData = new FormData(event.target);
